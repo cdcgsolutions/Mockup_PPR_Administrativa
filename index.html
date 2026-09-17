@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAADS — Sistema Académico y Administrativo Domingo Savio</title>
+
+  <!-- Favicon Logo SAADS v2 -->
+  <link rel="icon" type="image/jpeg" href="logosaadsv2.jpeg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Estilos Lumina SAADS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col pt-16 selection:bg-[#003876] selection:text-white">
+
+  <!-- ========================================================= -->
+  <!-- HEADER PRINCIPAL LUMINA SAADS (pos-header) -->
+  <!-- ========================================================= -->
+  <header class="pos-header bg-white fixed left-0 right-0 px-4 sm:px-8 flex items-center justify-between z-30 border-b border-slate-200/80 shadow-xs">
+    <!-- Brand Logo + Home Navigation -->
+    <div class="flex items-center cursor-pointer select-none" onclick="navigateTo('home')">
+      <img src="logosaadsv2.jpeg" alt="Logo SAADS" onerror="this.src='logo-upds.jpeg'" class="lumina-brand-logo me-2.5">
+      <span class="font-black text-slate-900 text-lg tracking-tight">SAADS</span>
+      <div class="vertical-divider hidden sm:block"></div>
+      <span id="navbar-page-title" class="text-xs sm:text-sm font-semibold text-slate-600 hidden sm:inline">Inicio</span>
+    </div>
+
+    <!-- Buscador Integrado Superior -->
+    <div class="hidden md:block flex-1 max-w-md mx-8">
+      <div class="relative">
+        <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="input-search-admin" oninput="renderApplications()" class="w-full glass-input pl-9 pr-4 py-1.5 text-xs focus:outline-none" placeholder="Buscar estudiante, RU o empresa...">
+      </div>
+    </div>
+
+    <!-- Header Right (Sede Selector + Notificaciones + Avatar) -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Pastilla de Sede Santa Cruz -->
+      <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
+        <i class="bi bi-geo-alt-fill text-[#003876]"></i>
+        <span>Sede Santa Cruz</span>
+      </div>
+
+      <!-- Notificaciones -->
+      <button onclick="showToast('Tienes postulaciones pendientes de revisión curricular', 'info')" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition relative" title="Notificaciones">
+        <i class="bi bi-bell text-sm"></i>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
+      </button>
+
+      <!-- Avatar & Popover Desplegable del Perfil -->
+      <div class="relative" id="profile-popover-wrapper">
+        <button onclick="toggleProfileDropdown(event)" class="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition focus:outline-none" id="btn-user-avatar">
+          <div class="w-8 h-8 rounded-full bg-[#003876] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+            DC
+          </div>
+        </button>
+
+        <!-- Menú Desplegable Flotante del Perfil (Estilo SAADS v2) -->
+        <div id="dropdown-profile" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200/90 p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
+          <div class="p-3 border-b border-slate-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-[#003876] text-white flex items-center justify-center text-sm font-bold shadow-xs">
+              DC
+            </div>
+            <div class="min-w-0 flex-1">
+              <h5 class="text-xs font-bold text-slate-900 truncate">Ing. Carlos Daniel Cuellar</h5>
+              <p class="text-[11px] text-slate-500 truncate">sc.carlos.cuellar.g@upds.net.bo</p>
+              <span class="inline-block mt-0.5 text-[9px] font-bold text-[#003876] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100 uppercase">
+                Coordinador PPR
+              </span>
+            </div>
+          </div>
+
+          <div class="py-2.5">
+            <span class="text-[10px] font-bold text-slate-400 px-3 uppercase tracking-wider block mb-1.5">Tema de la Interfaz</span>
+            <div class="grid grid-cols-3 gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200/60">
+              <button onclick="setAppTheme('light')" id="theme-btn-light" title="Claro"
+                class="flex items-center justify-center py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white transition text-xs font-semibold shadow-2xs bg-white text-[#003876]">
+                <i class="bi bi-sun-fill text-amber-500"></i>
+              </button>
+              <button onclick="setAppTheme('dark')" id="theme-btn-dark" title="Oscuro"
+                class="flex items-center justify-center py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white transition text-xs font-semibold">
+                <i class="bi bi-moon-stars-fill text-indigo-500"></i>
+              </button>
+              <button onclick="setAppTheme('auto')" id="theme-btn-auto" title="Sistema"
+                class="flex items-center justify-center py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white transition text-xs font-semibold">
+                <i class="bi bi-circle-half text-slate-500"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="border-t border-slate-100 my-1"></div>
+
+          <button onclick="toggleProfileDropdown(); showToast('Cierre de sesión simulado en SAADS', 'warning');" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-red-500 hover:bg-red-50 rounded-xl transition group text-left">
+            <i class="bi bi-box-arrow-right text-base text-red-500 group-hover:text-red-700 transition"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- VISTA 1: HOME -->
+  <!-- ========================================================= -->
+  <main id="view-home" class="flex-1 w-full px-6 lg:px-12 py-8 lumina-fade">
+    <div class="mb-8 text-left">
+      <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-2">
+        ¿Qué vamos a gestionar hoy?
+      </h1>
+      <p class="text-base text-slate-500">
+        Selecciona un módulo para acceder a tus herramientas administrativas.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Tarjeta Módulo PPR -->
+      <div class="app-card max-w-[320px] w-full" onclick="navigateTo('module-ppr')">
+        <div class="app-icon-wrapper bg-soft-primary">
+          <i class="bi bi-briefcase-fill text-[#4f46e5]"></i>
+        </div>
+        <h4 class="font-bold text-slate-900 text-base mb-1">Prácticas Profesionales</h4>
+        <p class="text-xs text-slate-500 leading-relaxed mb-6 font-medium">
+          5 interfaces disponibles
+        </p>
+
+        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+            5 interfaces
+          </span>
+          <i class="bi bi-arrow-right-short text-2xl text-slate-400"></i>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- VISTA 2: MODULE VIEW (ENTRAN DE A 3) -->
+  <!-- ========================================================= -->
+  <main id="view-module-ppr" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+    <!-- Breadcrumb Nivel 2: Volver al Inicio / Prácticas Profesionales -->
+    <nav class="mb-4 flex items-center">
+      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+        <i class="bi bi-arrow-left"></i>
+        <span>Volver al Inicio</span>
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <span class="font-bold text-slate-900 text-sm">Prácticas Profesionales</span>
+    </nav>
+
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 mb-6 relative overflow-hidden">
+      <i class="bi bi-briefcase-fill lumina-module-bg-icon"></i>
+
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-soft-primary flex items-center justify-center text-3xl text-[#4f46e5] shrink-0 shadow-xs">
+            <i class="bi bi-briefcase-fill"></i>
+          </div>
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Prácticas Profesionales</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5 max-w-2xl">
+                  5 interfaces disponibles            
+          </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-bold text-slate-900 text-base">Acciones y Formularios</h3>
+      <span class="text-xs font-semibold text-slate-500">5 interfaces disponibles</span>
+    </div>
+
+    <!-- Grid de Interfaces (ENTRAN DE A 3 COLUMNAS) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- 1. Revisión de Postulaciones (Paso 1 del flujo) -->
+      <div class="form-action-item-grid p-4 flex items-center" onclick="navigateTo('workspace', 'tab-postulaciones')">
+        <div class="form-icon-chip me-3">
+          <i class="bi bi-inbox-fill text-amber-600"></i>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h6 class="font-bold text-slate-900 text-sm truncate">1. Revisión de Postulaciones</h6>
+          <p class="text-xs text-slate-500 truncate">Ir a la página</p>
+        </div>
+        <div class="chevron ps-2 shrink-0">
+          <i class="bi bi-chevron-right text-slate-400"></i>
+        </div>
+      </div>
+
+      <!-- 2. Seguimiento de Prácticas (Paso 2 del flujo) -->
+      <div class="form-action-item-grid p-4 flex items-center" onclick="navigateTo('workspace', 'tab-seguimiento')">
+        <div class="form-icon-chip me-3">
+          <i class="bi bi-clock-history text-blue-600"></i>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h6 class="font-bold text-slate-900 text-sm truncate">2. Seguimiento en Curso (360h)</h6>
+          <p class="text-xs text-slate-500 truncate">Ir a la página</p>
+        </div>
+        <div class="chevron ps-2 shrink-0">
+          <i class="bi bi-chevron-right text-slate-400"></i>
+        </div>
+      </div>
+
+      <!-- 3. Acreditación Final & Notas (Paso 3 del flujo) -->
+      <div class="form-action-item-grid p-4 flex items-center" onclick="navigateTo('workspace', 'tab-acreditaciones')">
+        <div class="form-icon-chip me-3">
+          <i class="bi bi-award-fill text-emerald-600"></i>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h6 class="font-bold text-slate-900 text-sm truncate">3. Acreditación Final & Notas</h6>
+          <p class="text-xs text-slate-500 truncate">Ir a la página</p>
+        </div>
+        <div class="chevron ps-2 shrink-0">
+          <i class="bi bi-chevron-right text-slate-400"></i>
+        </div>
+      </div>
+
+      <!-- 4. Directorio de Convocatorias (Módulo Externo al flujo) -->
+      <div class="form-action-item-grid p-4 flex items-center" onclick="navigateTo('convocatorias')">
+        <div class="form-icon-chip me-3">
+          <i class="bi bi-building-gear text-purple-600"></i>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h6 class="font-bold text-slate-900 text-sm truncate">Convocatorias & Cupos</h6>
+          <p class="text-xs text-slate-500 truncate">Ir a la página</p>
+        </div>
+        <div class="chevron ps-2 shrink-0">
+          <i class="bi bi-chevron-right text-slate-400"></i>
+        </div>
+      </div>
+
+      <!-- 5. Parámetros de Cobro (Módulo Externo al flujo) -->
+      <div class="form-action-item-grid p-4 flex items-center" onclick="navigateTo('parametros')">
+        <div class="form-icon-chip me-3">
+          <i class="bi bi-sliders text-indigo-600"></i>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h6 class="font-bold text-slate-900 text-sm truncate">Parámetros de Cobro</h6>
+          <p class="text-xs text-slate-500 truncate">Ir a la página</p>
+        </div>
+        <div class="chevron ps-2 shrink-0">
+          <i class="bi bi-chevron-right text-slate-400"></i>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- VISTA 3: WORKSPACE DE GESTIÓN (TABS EXCLUSIVAMENTE DEL FLUJO) -->
+  <!-- ========================================================= -->
+  <main id="view-workspace" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+    <!-- Breadcrumb Completo Solicitado: Volver al inicio / Prácticas Profesionales / Módulo de Gestión Académica -->
+    <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
+      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+        <i class="bi bi-arrow-left"></i>
+        <span>Volver al Inicio</span>
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <button onclick="navigateTo('module-ppr')" class="text-xs font-semibold text-slate-600 hover:text-[#003876] hover:underline transition">
+        Prácticas Profesionales
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <span class="font-bold text-slate-900 text-sm">Módulo de Gestión Académica</span>
+    </nav>
+
+    <!-- Métricas Rápidas en 3 Pastillas del Flujo -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Paso 1: En Revisión</span>
+          <span id="metric-pendientes" class="text-lg font-black text-slate-900">3</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-[#003876] border border-blue-200 flex items-center justify-center shrink-0">
+          <i data-lucide="activity" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Paso 2: En Curso (360h)</span>
+          <span id="metric-encurso" class="text-lg font-black text-slate-900">4</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
+          <i data-lucide="award" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase text-slate-400 block">Paso 3: Acreditadas</span>
+          <span id="metric-acreditadas" class="text-lg font-black text-slate-900">1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navegación por Tabs: ÚNICAMENTE LOS 3 PASOS DEL FLUJO (Sin Convocatorias ni Parámetros) -->
+    <div class="border-b border-slate-200 mb-6 flex items-center gap-5 text-xs font-semibold overflow-x-auto pb-px">
+      <!-- 1. Flujo Paso 1 -->
+      <button id="btn-tab-postulaciones" onclick="switchWorkspaceTab('tab-postulaciones')" class="workspace-tab-btn py-3 border-b-2 border-[#003876] text-[#003876] font-bold transition flex items-center gap-2 shrink-0">
+        <i data-lucide="inbox" class="w-4 h-4"></i>
+        <span>1. Revisión de Postulaciones</span>
+      </button>
+
+      <!-- 2. Flujo Paso 2 -->
+      <button id="btn-tab-seguimiento" onclick="switchWorkspaceTab('tab-seguimiento')" class="workspace-tab-btn py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 shrink-0">
+        <i data-lucide="clock" class="w-4 h-4"></i>
+        <span>2. Seguimiento en Curso (360h)</span>
+      </button>
+
+      <!-- 3. Flujo Paso 3 -->
+      <button id="btn-tab-acreditaciones" onclick="switchWorkspaceTab('tab-acreditaciones')" class="workspace-tab-btn py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 shrink-0">
+        <i data-lucide="award" class="w-4 h-4"></i>
+        <span>3. Acreditación & Calificaciones</span>
+      </button>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TAB 1: SOLICITUDES DE POSTULACIÓN (PASO 1) -->
+    <!-- ========================================================= -->
+    <div id="tab-postulaciones" class="workspace-tab-content">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50">
+          <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-slate-700 shrink-0">Estado:</span>
+              <select id="select-status-filter" onchange="renderApplications()" class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-semibold text-slate-700 focus:outline-none">
+                <option value="ALL">Todos los Estados</option>
+                <option value="EN_REVISION" selected>En Revisión</option>
+                <option value="OBSERVADA">Observadas</option>
+                <option value="EN_CURSO">En Curso (360h)</option>
+                <option value="ACREDITADA">Acreditadas</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-slate-700 shrink-0">Modalidad:</span>
+              <select id="select-type-filter" onchange="renderApplications()" class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-semibold text-slate-700 focus:outline-none">
+                <option value="ALL">Todas las Modalidades</option>
+                <option value="CONVOCATORIA_CONVENIO">Convenio Vigente UPDS</option>
+                <option value="EMPRESA_SUGERIDA">Propuesta por Estudiante</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="switchWorkspaceTab('tab-seguimiento')" class="text-xs font-bold text-[#003876] hover:underline inline-flex items-center gap-1">
+              <span>Ir al Paso 2: Seguimiento</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                <th class="py-3 px-4">Estudiante / RU</th>
+                <th class="py-3 px-4">Institución / Modalidad</th>
+                <th class="py-3 px-4">Fecha Postulación</th>
+                <th class="py-3 px-4">Estado de Solicitud</th>
+                <th class="py-3 px-4">Documento Presentado</th>
+                <th class="py-3 px-4 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="table-applications-body">
+              <!-- Inyectado vía JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TAB 2: SEGUIMIENTO EN CURSO 360h (PASO 2) -->
+    <!-- ========================================================= -->
+    <div id="tab-seguimiento" class="workspace-tab-content hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs mb-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-blue-50 text-[#003876] px-2 py-0.5 rounded border border-blue-100">
+              Paso 2 del Flujo
+            </span>
+            <h3 class="text-sm font-bold text-slate-900">Estudiantes en Práctica Activa (360 Horas)</h3>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Control de horas, tutoría docente asignada e informes de seguimiento.</p>
+        </div>
+
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <input type="text" id="input-search-seguimiento" oninput="renderSeguimiento()" placeholder="Buscar en prácticas activas..." class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-medium text-slate-700 focus:outline-none w-full sm:w-56">
+          <button onclick="switchWorkspaceTab('tab-acreditaciones')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition inline-flex items-center gap-1">
+            <span>Paso 3: Acreditación</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjetas de Estudiantes en Práctica -->
+      <div id="container-seguimiento-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Inyectado vía JS -->
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TAB 3: ACREDITACIÓN FINAL & NOTAS (PASO 3) -->
+    <!-- ========================================================= -->
+    <div id="tab-acreditaciones" class="workspace-tab-content hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold uppercase tracking-wide bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-100">
+                Paso 3 Final del Flujo
+              </span>
+              <h3 class="text-xs sm:text-sm font-bold text-slate-900">Evaluación de Informes Finales y Registro de Calificación</h3>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Acreditación Oficial UPDS con Rúbrica Académica (1 a 100 puntos) y Actas</p>
+          </div>
+
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <input type="text" id="input-search-acreditaciones" oninput="renderAcreditaciones()" placeholder="Buscar estudiante..." class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-medium text-slate-700 focus:outline-none w-full sm:w-56">
+            <button onclick="switchWorkspaceTab('tab-seguimiento')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition inline-flex items-center gap-1">
+              <i class="bi bi-arrow-left"></i>
+              <span>Volver a Paso 2</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                <th class="py-3 px-4">Estudiante / RU</th>
+                <th class="py-3 px-4">Empresa Receptora & Tutor</th>
+                <th class="py-3 px-4">Informe Final Entregado</th>
+                <th class="py-3 px-4">Calificación Oficial</th>
+                <th class="py-3 px-4">Acta de Acreditación</th>
+                <th class="py-3 px-4 text-right">Acción / Estado</th>
+              </tr>
+            </thead>
+            <tbody id="table-acreditaciones-body">
+              <!-- Inyectado vía JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- VISTA 4: CONVOCATORIAS & CUPOS (MÓDULO INDEPENDIENTE) -->
+  <!-- ========================================================= -->
+  <main id="view-convocatorias" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+    <!-- Breadcrumb Completo Solicitado: Volver al inicio / Prácticas Profesionales / Convocatorias & Cupos -->
+    <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
+      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+        <i class="bi bi-arrow-left"></i>
+        <span>Volver al Inicio</span>
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <button onclick="navigateTo('module-ppr')" class="text-xs font-semibold text-slate-600 hover:text-[#003876] hover:underline transition">
+        Prácticas Profesionales
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <span class="font-bold text-slate-900 text-sm">Convocatorias & Cupos</span>
+    </nav>
+
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-purple-50 text-purple-700 px-2 py-0.5 rounded border border-purple-100">
+              Gestión Institucional
+            </span>
+            <h3 class="text-base font-bold text-slate-900">Convocatorias Institucionales Vigentes UPDS</h3>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Plazas disponibles y convenios marco para estudiantes de la Facultad de Ingeniería</p>
+        </div>
+        <button onclick="openNuevaConvocatoriaModal()" class="px-4 py-2 bg-[#003876] hover:bg-[#002855] text-white text-xs font-bold rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>Nueva Convocatoria</span>
+        </button>
+      </div>
+
+      <div id="container-convocatorias-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+        <!-- Inyectado vía JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- VISTA 5: PARÁMETROS DE COBRO GALILEO (MÓDULO INDEPENDIENTE) -->
+  <!-- ========================================================= -->
+  <main id="view-parametros" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+    <!-- Breadcrumb Completo Solicitado: Volver al inicio / Prácticas Profesionales / Parámetros de Cobro -->
+    <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
+      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+        <i class="bi bi-arrow-left"></i>
+        <span>Volver al Inicio</span>
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <button onclick="navigateTo('module-ppr')" class="text-xs font-semibold text-slate-600 hover:text-[#003876] hover:underline transition">
+        Prácticas Profesionales
+      </button>
+      <span class="text-slate-400 mx-2">/</span>
+      <span class="font-bold text-slate-900 text-sm">Parámetros de Cobro</span>
+    </nav>
+
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold uppercase tracking-wide bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-100">
+              Configuración del Sistema
+            </span>
+            <h3 class="text-base font-bold text-slate-900">Parámetros de Cobro — Integración Galileo</h3>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Edita los valores contables y aranceles que aparecen bloqueados en el modal de cobro Galileo al aprobar postulaciones.
+          </p>
+        </div>
+        <button onclick="saveParametrosCobro(event)" class="px-5 py-2.5 bg-[#003876] hover:bg-[#002855] text-white text-xs font-bold rounded-xl shadow-xs transition inline-flex items-center gap-1.5 self-start sm:self-auto">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          <span>Guardar Parámetros</span>
+        </button>
+      </div>
+
+      <!-- Grid de Configuración: Formulario a la izquierda y Previsualización a la derecha -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Formulario Editable de Parámetros -->
+        <form onsubmit="saveParametrosCobro(event)" class="lg:col-span-7 space-y-4">
+          
+          <div class="p-4 bg-slate-50/70 border border-slate-200 rounded-2xl space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+              <i class="bi bi-receipt text-[#003876]"></i>
+              <span>Parámetros del Servicio y Arancel</span>
+            </h4>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Servicio *</label>
+                <input type="text" id="param-servicio" required oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800 bg-white">
+                <span class="text-[10px] text-slate-400 mt-0.5 block">Ej: CUOTA, ARANCEL, PRACTICA</span>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Artículo Galileo *</label>
+                <input type="text" id="param-articulo" required oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800 bg-white">
+                <span class="text-[10px] text-slate-400 mt-0.5 block">Código interno de artículo Galileo</span>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Descripción del Item *</label>
+                <input type="text" id="param-descripcion" required oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-medium text-slate-800 bg-white">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Precio Unitario (Bs.) *</label>
+                <input type="text" id="param-precio" required oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-black text-[#003876] bg-white">
+                <span class="text-[10px] text-slate-400 mt-0.5 block">Monto total facturable en Bs.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50/70 border border-slate-200 rounded-2xl space-y-4">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+              <i class="bi bi-bank text-[#003876]"></i>
+              <span>Parámetros Contables y de Control</span>
+            </h4>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Centro de Beneficio (CeBe) *</label>
+                <input type="text" id="param-cebe" required oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-mono font-bold text-slate-800 bg-white">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">N. Pago *</label>
+                <input type="number" id="param-npago" min="1" max="12" required oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800 bg-white">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Días de Validez de Orden</label>
+                <input type="number" id="param-dias-validez" min="1" max="90" value="30" oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800 bg-white">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Sufijo de Observación</label>
+                <input type="text" id="param-obs-sufijo" value="2026/2/3" oninput="updateParametrosPreview()"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-medium text-slate-800 bg-white">
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 flex justify-end">
+            <button type="submit" class="px-6 py-2.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-2">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>Aplicar y Guardar Cambios</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Previsualización en Tiempo Real de la Tarjeta Galileo -->
+        <div class="lg:col-span-5 space-y-3">
+          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+            Previsualización de Orden Galileo
+          </span>
+
+          <div class="p-5 border border-slate-200 rounded-2xl bg-white shadow-xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <span class="text-xs font-bold text-slate-800">Detalles de Cobro (Demostrativo)</span>
+              <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                En Vivo
+              </span>
+            </div>
+
+            <!-- Bloque Pago #1 Preview -->
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5 text-xs">
+              <div class="flex items-center justify-between font-bold text-slate-700 text-[11px]">
+                <span>Pago #1</span>
+                <i class="bi bi-trash3 text-slate-300 text-xs"></i>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-[11px]">
+                <div>
+                  <span class="text-[10px] text-slate-400 block font-medium">Servicio</span>
+                  <span class="font-bold text-slate-800" id="prev-galileo-servicio">CUOTA</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block font-medium">Artículo Galileo</span>
+                  <span class="font-mono font-bold text-slate-800" id="prev-galileo-articulo">ACAD02</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block font-medium">Descripción</span>
+                  <span class="font-medium text-slate-700" id="prev-galileo-desc">CUOTA</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block font-medium">Precio Unitario</span>
+                  <span class="font-black text-[#003876]" id="prev-galileo-precio">Bs. 640,00</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block font-medium">CeBe</span>
+                  <span class="font-mono text-slate-700" id="prev-galileo-cebe">60010101</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block font-medium">N. Pago</span>
+                  <span class="font-bold text-slate-800" id="prev-galileo-npago">1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-[11px] text-[#003876] leading-relaxed flex items-start gap-2">
+              <i class="bi bi-info-circle-fill shrink-0 mt-0.5"></i>
+              <span>Cualquier modificación guardada aquí será aplicada de inmediato en el modal de cobro que se muestra al aprobar estudiantes en el <strong>Paso 1: Revisión de Postulaciones</strong>.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 1: REVISIÓN DE EXPEDIENTE (CON SELECT DE DOCENTE TUTOR) -->
+  <!-- ========================================================= -->
+  <div id="modal-expediente" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-xl w-full overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#003876] border border-blue-200 flex items-center justify-center font-bold text-xs">
+            <i data-lucide="file-search" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900">Revisión de Expediente Académico</h4>
+            <span class="text-[11px] text-slate-400">Paso 1: Validación y Asignación de Docente Tutor</span>
+          </div>
+        </div>
+        <button onclick="closeExpedienteModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
+        <!-- Ficha del Estudiante -->
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm" id="modal-student-name">Carlos Daniel Cuellar</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#003876] bg-blue-50 px-2 py-0.5 rounded border border-blue-100" id="modal-student-ru">104077</span>
+          </div>
+          <div class="flex items-center justify-between text-slate-500 text-[11px]">
+            <span>Carrera: <strong class="text-slate-700" id="modal-student-career">Ingeniería de Sistemas</strong></span>
+            <span>Semestre: <strong class="text-slate-700" id="modal-student-semestre">8vo Semestre</strong></span>
+          </div>
+        </div>
+
+        <!-- Alerta de Observación previa si existe -->
+        <div id="modal-obs-display" class="hidden p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-900 text-xs">
+          <div class="flex items-center gap-1.5 font-bold mb-1 text-rose-800">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span>Observación Registrada:</span>
+          </div>
+          <p id="modal-obs-text" class="text-[11px] leading-relaxed"></p>
+        </div>
+
+        <!-- Ficha de la Empresa Receptora -->
+        <div>
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Institución / Empresa Receptora</span>
+          <div class="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5">
+            <div class="font-bold text-slate-800 text-sm" id="modal-institution">Banco Unión S.A.</div>
+            <div class="text-[11px] text-slate-500" id="modal-horario">Turno Mañana • 360 Horas Académicas</div>
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px]">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">NIT de Empresa</span>
+                <span class="font-semibold text-slate-700" id="modal-empresa-nit">1020304050</span>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Cargo Asignado</span>
+                <span class="font-semibold text-slate-700 truncate block" id="modal-empresa-cargo">Desarrollador Junior</span>
+              </div>
+              <div class="col-span-2">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Representante / Supervisor</span>
+                <span class="font-semibold text-slate-700" id="modal-empresa-rep">Lic. Fernando Gómez</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documento de Apertura Adjunto -->
+        <div>
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Formulario Oficial Adjunto</span>
+          <div class="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="file-check" class="w-4 h-4 text-emerald-600"></i>
+              <span class="font-semibold text-emerald-900 text-[11px]" id="modal-doc-name">Formulario_Apertura_Firmado.pdf</span>
+            </div>
+            <button onclick="showToast('Visualizando documento adjunto...', 'info')" class="text-[11px] font-bold text-emerald-700 underline hover:text-emerald-900">
+              Descargar / Ver PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- SELECT AUTOCOMPLETE DE DOCENTES TUTORES -->
+        <div class="p-4 bg-blue-50/60 border border-blue-200 rounded-2xl space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-[#003876] uppercase tracking-wide">
+              <i class="bi bi-person-badge me-1"></i> Docente Tutor Asignado (Carrera) *
+            </label>
+            <span class="text-[10px] text-blue-600 font-semibold">Obligatorio</span>
+          </div>
+          <select id="modal-select-docente" class="w-full px-3.5 py-2.5 border border-blue-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800 bg-white shadow-2xs">
+            <!-- Inyectado dinámicamente -->
+          </select>
+          <p class="text-[10px] text-slate-500">
+            Al aprobar la postulación, este docente será asignado a la práctica y se abrirá el formulario de cobro Galileo.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-3">
+        <button onclick="openObservarModal()" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl transition flex items-center gap-1.5">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+          <span>Observar</span>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button onclick="closeExpedienteModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+            Cerrar
+          </button>
+          <button onclick="aprobarPostulacionConGalileo()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Aprobar Postulación</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 2: GALILEO DEMOSTRATIVO (BLOQUEADO) -->
+  <!-- ========================================================= -->
+  <div id="modal-galileo" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden max-h-[92vh] flex flex-col">
+      <!-- Header Estilo Galileo / SAADS -->
+      <div class="px-6 py-4 border-b border-slate-200 bg-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-[#003876] text-white flex items-center justify-center text-xs font-bold">
+            <i class="bi bi-cash-stack"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900">Emisión de Orden de Cobro (Galileo)</h4>
+            <span class="text-[10px] text-slate-400">Integración Administrativa UPDS • Modo Demostrativo</span>
+          </div>
+        </div>
+        <button onclick="closeGalileoModal()" class="w-7 h-7 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Formulario Idéntico a la Foto Enviada por el Usuario (Bloqueado) -->
+      <div class="p-6 space-y-4 text-xs overflow-y-auto flex-1 bg-white select-none">
+        
+        <!-- Fila 1: Persona & Inscripción Carrera -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Persona -->
+          <div class="relative">
+            <span class="absolute -top-2 left-3 bg-white px-1 text-[11px] font-medium text-slate-500">Persona</span>
+            <input type="text" id="galileo-persona" disabled value="Cesia Helen Morales Orosco"
+              class="w-full px-3 py-2.5 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium focus:outline-none cursor-not-allowed">
+          </div>
+
+          <!-- Inscripción Carrera -->
+          <div class="relative">
+            <span class="absolute -top-2 left-3 bg-white px-1 text-[11px] font-medium text-slate-500">Inscripción Carrera</span>
+            <div class="w-full flex items-center justify-between px-3 py-2.5 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium cursor-not-allowed">
+              <input type="text" id="galileo-carrera" disabled value="Derecho 210-06" class="w-full bg-transparent focus:outline-none cursor-not-allowed text-xs font-medium">
+              <div class="flex items-center gap-1.5 text-slate-400 shrink-0">
+                <i class="bi bi-x text-sm"></i>
+                <i class="bi bi-caret-down-fill text-[10px]"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 2: Observación & Fecha Validez -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Observación -->
+          <div class="relative">
+            <span class="absolute -top-2 left-3 bg-white px-1 text-[11px] font-medium text-slate-500">Observación</span>
+            <input type="text" id="galileo-observacion" disabled value="Derecho 210-06: 2026/2/3"
+              class="w-full px-3 py-2.5 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium focus:outline-none cursor-not-allowed">
+          </div>
+
+          <!-- Fecha Validez -->
+          <div class="relative">
+            <span class="absolute -top-2 left-3 bg-white px-1 text-[11px] font-medium text-slate-500">Fecha Validez</span>
+            <div class="w-full flex items-center justify-between px-3 py-2.5 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium cursor-not-allowed">
+              <input type="text" id="galileo-fecha-validez" disabled value="10/10/2026" class="w-full bg-transparent focus:outline-none cursor-not-allowed text-xs font-medium">
+              <i class="bi bi-calendar3 text-slate-400 text-xs shrink-0"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- TÍTULO: Detalles de Cobro (Sin Facturable, Sin Agregar Reserva) -->
+        <div class="pt-2">
+          <h5 class="text-sm font-bold text-slate-900 mb-2">Detalles de Cobro</h5>
+
+          <!-- Bloque Pago #1 -->
+          <div class="p-4 border border-slate-200 rounded-xl bg-slate-50/50 space-y-3">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-700">Pago #1</span>
+              <button type="button" disabled class="text-slate-300 cursor-not-allowed">
+                <i class="bi bi-trash3 text-xs"></i>
+              </button>
+            </div>
+
+            <!-- Fila Servicio & Artículo Galileo -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="relative">
+                <span class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-medium text-slate-500">Servicio</span>
+                <div class="w-full flex items-center justify-between px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium cursor-not-allowed">
+                  <input type="text" id="galileo-servicio" disabled value="CUOTA" class="w-full bg-transparent focus:outline-none cursor-not-allowed text-xs font-medium">
+                  <div class="flex items-center gap-1 text-slate-400 shrink-0">
+                    <i class="bi bi-x text-xs"></i>
+                    <i class="bi bi-caret-down-fill text-[9px]"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative">
+                <span class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-medium text-slate-500">Artículo Galileo</span>
+                <input type="text" id="galileo-articulo" disabled value="ACAD02"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium focus:outline-none cursor-not-allowed">
+              </div>
+            </div>
+
+            <!-- Fila Descripción & Precio Unitario -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="relative">
+                <span class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-medium text-slate-500">Descripción</span>
+                <input type="text" id="galileo-descripcion" disabled value="CUOTA"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium focus:outline-none cursor-not-allowed">
+              </div>
+
+              <div class="relative">
+                <span class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-medium text-slate-500">Precio Unitario</span>
+                <input type="text" id="galileo-precio" disabled value="640,00"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium focus:outline-none cursor-not-allowed">
+              </div>
+            </div>
+
+            <!-- Fila CeBe & N. Pago -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="relative">
+                <span class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-medium text-slate-500">CeBe</span>
+                <input type="text" id="galileo-cebe" disabled value="60010101"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium focus:outline-none cursor-not-allowed">
+              </div>
+
+              <div class="relative">
+                <span class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-medium text-slate-500">N. Pago</span>
+                <div class="w-full flex items-center justify-between px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-800 text-xs font-medium cursor-not-allowed">
+                  <input type="text" id="galileo-npago" disabled value="1" class="w-full bg-transparent focus:outline-none cursor-not-allowed text-xs font-medium">
+                  <div class="flex flex-col text-slate-400 text-[8px] leading-none shrink-0">
+                    <i class="bi bi-chevron-up"></i>
+                    <i class="bi bi-chevron-down"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-slate-500 text-[11px]">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-lock-fill text-slate-400 text-xs"></i>
+            <span>Valores cargados desde <strong>Parámetros de Cobro</strong>. Al dar clic en <strong>Aceptar</strong>, la práctica entrará directamente en curso.</span>
+          </div>
+          <button type="button" onclick="closeGalileoModal(); navigateTo('parametros');" class="text-[#003876] font-bold hover:underline shrink-0 text-xs">
+            Editar Parámetros
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer con Aceptar y Cancelar -->
+      <div class="px-6 py-3.5 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-3">
+        <button onclick="closeGalileoModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 transition">
+          Cancelar
+        </button>
+        <button onclick="confirmarAprobacionGalileo()" class="px-6 py-2 text-xs font-bold text-white bg-[#003876] hover:bg-[#002855] rounded-xl shadow-xs transition transform active:scale-95 flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Aceptar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 3: OBSERVAR SOLICITUD -->
+  <!-- ========================================================= -->
+  <div id="modal-observar" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden">
+      <div class="p-4 border-b border-slate-100 bg-amber-50/70 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600"></i>
+          <h4 class="text-sm font-bold text-amber-900">Observación de Solicitud</h4>
+        </div>
+        <button onclick="closeObservarModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3 text-xs">
+        <p class="text-slate-600">
+          Estudiante: <strong id="obs-student-name" class="text-slate-900">Carlos Daniel Cuellar</strong>
+        </p>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Motivo o Justificación Académica *</label>
+          <textarea id="obs-motivo-input" rows="4" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs" placeholder="Ej: Falta sello oficial de la empresa receptora en el formulario."></textarea>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+        <button onclick="closeObservarModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="submitObservacion()" class="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-xs transition">
+          Confirmar Observación
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 4: REGISTRAR AVANCE DE HORAS (SEGUIMIENTO) -->
+  <!-- ========================================================= -->
+  <div id="modal-avance-horas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden">
+      <div class="p-4 border-b border-slate-100 bg-blue-50/70 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-[#003876]"></i>
+          <h4 class="text-sm font-bold text-slate-900">Registrar Horas de Práctica</h4>
+        </div>
+        <button onclick="closeAvanceModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3.5 text-xs">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+          <div class="font-bold text-slate-900" id="avance-student-name">Sofia Loren Soria</div>
+          <div class="text-[11px] text-slate-500">RU: <strong id="avance-student-ru">102890</strong></div>
+          <div class="text-[11px] text-[#003876] font-semibold pt-1 border-t border-slate-200/60">
+            Horas Actuales: <span id="avance-current-hours">240 / 360 Horas</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Horas a Sumar (según Ficha de Seguimiento) *</label>
+          <input type="number" id="avance-hours-add" value="40" min="1" max="120" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800">
+          <span class="text-[10px] text-slate-400 mt-1 block">Rango sugerido: 40 horas por semana o informe mensual.</span>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+        <button onclick="closeAvanceModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="submitAvanceHoras()" class="px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition">
+          Guardar Avance
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 5: CAMBIAR DOCENTE TUTOR -->
+  <!-- ========================================================= -->
+  <div id="modal-asignar-docente" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden">
+      <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="user-check" class="w-4 h-4 text-[#003876]"></i>
+          <h4 class="text-sm font-bold text-slate-900">Docente Tutor Asignado</h4>
+        </div>
+        <button onclick="closeDocenteModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3.5 text-xs">
+        <p class="text-slate-600">
+          Estudiante: <strong id="docente-student-name" class="text-slate-900">Sofia Loren Soria</strong>
+        </p>
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Docente Tutor de la Carrera *</label>
+          <select id="select-docente-tutor" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs bg-white">
+            <!-- Inyectado dinámicamente -->
+          </select>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+        <button onclick="closeDocenteModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="submitAsignarDocente()" class="px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition">
+          Actualizar Tutor
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 6: CALIFICACIÓN Y RÚBRICA (ACREDITACIÓN) -->
+  <!-- ========================================================= -->
+  <div id="modal-calificacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="p-5 border-b border-slate-100 bg-emerald-50/70 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+            <i data-lucide="award" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900">Rúbrica de Acreditación Oficial UPDS</h4>
+            <span class="text-[11px] text-slate-500">Calificación de 1 a 100 Puntos y Acta</span>
+          </div>
+        </div>
+        <button onclick="closeCalificacionModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+          <div class="flex items-center justify-between font-bold text-slate-900">
+            <span id="calif-student-name">Mateo Fernando Aguilera</span>
+            <span class="text-[#003876]" id="calif-student-ru">101550</span>
+          </div>
+          <div class="text-slate-500 text-[11px]" id="calif-institution">Sofía S.A. - Planta de Procesamiento</div>
+          <div class="text-[11px] text-slate-400">Docente Evaluador: <strong id="calif-tutor" class="text-slate-700">Lic. Claudia Justiniano</strong></div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="p-3 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="font-bold text-slate-800">1. Evaluación del Tutor Empresarial (30%)</label>
+              <span class="text-[10px] font-semibold text-slate-400">Máx. 30 pts</span>
+            </div>
+            <input type="number" id="score-empresa" value="28" min="0" max="30" oninput="calculateTotalNota()" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#003876]">
+          </div>
+
+          <div class="p-3 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="font-bold text-slate-800">2. Calidad Técnica del Informe Final (40%)</label>
+              <span class="text-[10px] font-semibold text-slate-400">Máx. 40 pts</span>
+            </div>
+            <input type="number" id="score-informe" value="38" min="0" max="40" oninput="calculateTotalNota()" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#003876]">
+          </div>
+
+          <div class="p-3 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="font-bold text-slate-800">3. Competencias y Aplicación Curricular (30%)</label>
+              <span class="text-[10px] font-semibold text-slate-400">Máx. 30 pts</span>
+            </div>
+            <input type="number" id="score-defensa" value="29" min="0" max="30" oninput="calculateTotalNota()" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#003876]">
+          </div>
+        </div>
+
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold uppercase text-emerald-800 block">Calificación Final</span>
+            <span id="calif-criterio-badge" class="text-xs font-bold text-emerald-700">Excelente / Con Distinción</span>
+          </div>
+          <div class="text-right">
+            <span id="calif-total-score" class="text-3xl font-black text-emerald-800">95</span>
+            <span class="text-xs font-semibold text-emerald-600">/ 100</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Observaciones del Consejo de Carrera</label>
+          <textarea id="calif-obs" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs" placeholder="Comentarios finales..."></textarea>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+        <button onclick="closeCalificacionModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="submitCalificacion()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
+          <i data-lucide="check-check" class="w-4 h-4"></i>
+          <span>Firmar Acta y Acreditar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 7: VISTA PREVIA DEL ACTA OFICIAL -->
+  <!-- ========================================================= -->
+  <div id="modal-acta-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <img src="logosaadsv2.jpeg" alt="UPDS" onerror="this.src='logo-upds.jpeg'" class="w-6 h-6 rounded">
+          <h4 class="text-xs font-bold text-slate-900">Acta Oficial de Acreditación de Práctica Profesional</h4>
+        </div>
+        <button onclick="closeActaModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <div class="text-center pb-3 border-b border-slate-100">
+          <span class="text-[10px] font-bold uppercase text-[#003876] tracking-widest block">Universidad Privada Domingo Savio</span>
+          <h3 class="text-base font-black text-slate-900 mt-0.5">Acta de Calificación y Acreditación PPR</h3>
+          <span class="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200 inline-block mt-1" id="acta-modal-num">PPR-ACTA-2026-0038</span>
+        </div>
+
+        <div class="space-y-2 text-slate-700 leading-relaxed">
+          <p>
+            Por cuanto el estudiante <strong id="acta-student-name" class="text-slate-900">Valeria Paz Hurtado</strong> con Registro Universitario <strong id="acta-student-ru">100980</strong>, de la carrera de <strong id="acta-career">Ingeniería de Sistemas</strong>, ha completado satisfactoriamente <strong>360 Horas Académicas</strong> de práctica en la institución <strong id="acta-institution">Finansol S.A.</strong>.
+          </p>
+          <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+            <span class="font-bold text-slate-700">Calificación Final Otorgada:</span>
+            <span class="text-xl font-black text-[#003876]" id="acta-score">98 / 100</span>
+          </div>
+          <p class="text-[11px] text-slate-500">
+            Docente Tutor Asignado: <strong id="acta-docente" class="text-slate-700">Ing. Marco Antonio Leaños</strong><br>
+            Fecha de Acreditación: <span id="acta-date">17 de septiembre de 2026</span>
+          </p>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+          <span>Verificación Blockchain SAADS: OK</span>
+          <span>Firma Digital Certificada UPDS</span>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+        <button onclick="closeActaModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cerrar
+        </button>
+        <button onclick="showToast('Descargando Acta Oficial Certificada en PDF...', 'success')" class="px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>Descargar Acta PDF</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 8: NUEVA CONVOCATORIA -->
+  <!-- ========================================================= -->
+  <div id="modal-nueva-convocatoria" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="p-4 border-b border-slate-100 bg-purple-50/70 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="building-gear" class="w-4 h-4 text-purple-700"></i>
+          <h4 class="text-sm font-bold text-slate-900">Publicar Nueva Convocatoria Institucional</h4>
+        </div>
+        <button onclick="closeNuevaConvocatoriaModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitNuevaConvocatoria(event)" class="p-6 space-y-3.5 text-xs overflow-y-auto flex-1">
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Razón Social o Empresa *</label>
+          <input required type="text" id="new-conv-empresa" placeholder="Ej: Laboratorios Bagó de Bolivia S.A." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Rubro *</label>
+            <select required id="new-conv-rubro" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none bg-white">
+              <option value="Tecnología e Información">Tecnología e Información</option>
+              <option value="Banca y Finanzas">Banca y Finanzas</option>
+              <option value="Industrial y Manufactura">Industrial y Manufactura</option>
+              <option value="Comercio y Retail">Comercio y Retail</option>
+              <option value="Salud y Farmacia">Salud y Farmacia</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">NIT de la Empresa *</label>
+            <input required type="text" id="new-conv-nit" placeholder="Ej: 1029384756" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Plazas Ofertadas *</label>
+            <input required type="number" id="new-conv-plazas" min="1" max="50" value="4" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Horario y Turno</label>
+            <input type="text" id="new-conv-horario" placeholder="Ej: Mañana (08:00 - 12:00)" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Descripción del Perfil / Requisitos</label>
+          <textarea id="new-conv-desc" rows="3" placeholder="Requisitos, tecnologías o áreas donde se desempeñará el practicante..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeNuevaConvocatoriaModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+            Cancelar
+          </button>
+          <button type="submit" class="px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition">
+            Publicar Convocatoria
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL 9: EDITAR PLAZAS -->
+  <!-- ========================================================= -->
+  <div id="modal-editar-plazas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-sm w-full overflow-hidden">
+      <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+        <h4 class="text-sm font-bold text-slate-900">Modificar Cupos de Práctica</h4>
+        <button onclick="closeEditarPlazasModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-3.5 text-xs">
+        <div>
+          <span class="font-bold text-slate-900 block" id="edit-plazas-empresa">Banco Unión S.A.</span>
+          <span class="text-slate-500 text-[11px]" id="edit-plazas-ocupadas">3 ocupadas actualmente</span>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Total de Plazas Ofertadas</label>
+          <input type="number" id="edit-plazas-input" min="1" max="50" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none text-xs font-bold text-slate-800">
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+        <button onclick="closeEditarPlazasModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="submitEditarPlazas()" class="px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition">
+          Guardar Plazas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 space-y-2 z-50"></div>
+
+  <!-- JavaScript App MOCKUP_ADM -->
+  <script src="js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+﻿/* ============================================================
+   SAADS v2 LUMINA DESIGN SYSTEM - MOCKUP ADMINISTRATIVO (UPDS)
+   ============================================================ */
+
+:root,
+[data-bs-theme="light"] {
+    --lumina-primary: #003876;
+    --lumina-primary-hover: #002855;
+    --lumina-surface: #ffffff;
+    --lumina-surface-soft: #f8fafc;
+    --lumina-border: #f1f5f9;
+    --lumina-border-hover: #cbd5e1;
+    --lumina-text-soft: #718096;
+    --lumina-chevron: #cbd5e1;
+    --lumina-card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    --lumina-hover-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.08);
+    --lumina-search-bg: #edf2f7;
+    --lumina-chip-bg: #f1f5f9;
+    --lumina-chip-color: #64748b;
+
+    /* Pares de color suave */
+    --soft-primary-bg: #e0e7ff;  --soft-primary-fg: #4f46e5;
+    --soft-success-bg: #dcfce7;  --soft-success-fg: #16a34a;
+    --soft-warning-bg: #fef3c7;  --soft-warning-fg: #d97706;
+    --soft-danger-bg:  #fee2e2;  --soft-danger-fg:  #dc2626;
+    --soft-info-bg:    #e0f2fe;  --soft-info-fg:    #0284c7;
+    --soft-purple-bg:  #f3e8ff;  --soft-purple-fg:  #9333ea;
+}
+
+[data-bs-theme="dark"] {
+    --lumina-surface: #1e293b;
+    --lumina-surface-soft: rgba(255, 255, 255, 0.04);
+    --lumina-border: rgba(255, 255, 255, 0.08);
+    --lumina-border-hover: rgba(255, 255, 255, 0.20);
+    --lumina-text-soft: #94a3b8;
+    --lumina-chevron: #475569;
+    --lumina-card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.55);
+    --lumina-hover-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.65);
+    --lumina-search-bg: rgba(255, 255, 255, 0.06);
+    --lumina-chip-bg: rgba(255, 255, 255, 0.08);
+    --lumina-chip-color: #cbd5e1;
+
+    --soft-primary-bg: rgba(99, 102, 241, 0.18);  --soft-primary-fg: #a5b4fc;
+    --soft-success-bg: rgba(34, 197, 94, 0.16);   --soft-success-fg: #86efac;
+    --soft-warning-bg: rgba(217, 119, 6, 0.20);   --soft-warning-fg: #fcd34d;
+    --soft-danger-bg:  rgba(239, 68, 68, 0.16);   --soft-danger-fg:  #fca5a5;
+    --soft-info-bg:    rgba(2, 132, 199, 0.22);   --soft-info-fg:    #7dd3fc;
+    --soft-purple-bg:  rgba(147, 51, 234, 0.22);  --soft-purple-fg:  #d8b4fe;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+}
+
+/* Pos Header sitting directly at top */
+.pos-header {
+    height: 3.75rem;
+    top: 0;
+    z-index: 1030;
+    border-bottom: 1px solid var(--lumina-border);
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05);
+}
+
+.lumina-brand-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 20px;
+    background-color: #cbd5e1;
+    margin: 0 12px;
+}
+
+.glass-input, .search-pill {
+    background-color: var(--lumina-search-bg);
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus, .search-pill:focus {
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 56, 118, 0.15);
+}
+
+/* Soft Badges */
+.bg-soft-primary { background-color: var(--soft-primary-bg) !important; color: var(--soft-primary-fg) !important; }
+.bg-soft-success { background-color: var(--soft-success-bg) !important; color: var(--soft-success-fg) !important; }
+.bg-soft-warning { background-color: var(--soft-warning-bg) !important; color: var(--soft-warning-fg) !important; }
+.bg-soft-danger  { background-color: var(--soft-danger-bg)  !important; color: var(--soft-danger-fg)  !important; }
+.bg-soft-info    { background-color: var(--soft-info-bg)    !important; color: var(--soft-info-fg)    !important; }
+.bg-soft-purple  { background-color: var(--soft-purple-bg)  !important; color: var(--soft-purple-fg)  !important; }
+
+/* Cards Home */
+.app-card {
+    background: var(--lumina-surface);
+    border: none;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: var(--lumina-card-shadow);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--lumina-hover-shadow);
+}
+
+.app-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.app-card:hover .app-icon-wrapper {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.form-action-item-grid {
+    background: var(--lumina-surface);
+    border: 1px solid var(--lumina-border);
+    border-radius: 16px;
+    height: 100%;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.form-action-item-grid:hover {
+    border-color: var(--lumina-border-hover);
+    background: var(--lumina-surface-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.form-action-item-grid:hover .chevron {
+    transform: translateX(4px);
+    color: var(--lumina-primary);
+}
+
+.form-icon-chip {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lumina-chip-bg);
+    color: var(--lumina-chip-color);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.lumina-module-bg-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(20%, -30%);
+    font-size: 15rem;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.lumina-fade {
+    animation: luminaFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes luminaFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
