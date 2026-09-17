@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SAADS — Sistema Académico y Administrativo Domingo Savio</title>
+  <title>SAADS</title>
 
   <!-- Favicon Logo SAADS v2 -->
   <link rel="icon" type="image/jpeg" href="logosaadsv2.jpeg">
@@ -32,7 +32,7 @@
   <!-- ========================================================= -->
   <!-- HEADER PRINCIPAL LUMINA SAADS (pos-header) -->
   <!-- ========================================================= -->
-  <header class="pos-header bg-white fixed left-0 right-0 px-4 sm:px-8 flex items-center justify-between z-30 border-b border-slate-200/80 shadow-xs">
+  <header class="pos-header bg-white fixed left-0 right-0 px-3 sm:px-6 lg:px-8 flex items-center justify-between z-30 border-b border-slate-200/80 shadow-xs">
     <!-- Brand Logo + Home Navigation -->
     <div class="flex items-center cursor-pointer select-none" onclick="navigateTo('home')">
       <img src="logosaadsv2.jpeg" alt="Logo SAADS" onerror="this.src='logo-upds.jpeg'" class="lumina-brand-logo me-2.5">
@@ -41,7 +41,7 @@
       <span id="navbar-page-title" class="text-xs sm:text-sm font-semibold text-slate-600 hidden sm:inline">Inicio</span>
     </div>
 
-    <!-- Buscador Integrado Superior -->
+    <!-- Buscador Integrado Superior (Desktop) -->
     <div class="hidden md:block flex-1 max-w-md mx-8">
       <div class="relative">
         <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Header Right (Sede Selector + Notificaciones + Avatar) -->
-    <div class="flex items-center gap-2 sm:gap-3">
+    <div class="flex items-center gap-1.5 sm:gap-3">
       <!-- Pastilla de Sede Santa Cruz -->
       <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
         <i class="bi bi-geo-alt-fill text-[#003876]"></i>
@@ -58,7 +58,7 @@
       </div>
 
       <!-- Notificaciones -->
-      <button onclick="showToast('Tienes postulaciones pendientes de revisión curricular', 'info')" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition relative" title="Notificaciones">
+      <button onclick="showToast('Tienes postulaciones pendientes de revisión curricular', 'info')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition relative" title="Notificaciones">
         <i class="bi bi-bell text-sm"></i>
         <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
       </button>
@@ -66,7 +66,7 @@
       <!-- Avatar & Popover Desplegable del Perfil -->
       <div class="relative" id="profile-popover-wrapper">
         <button onclick="toggleProfileDropdown(event)" class="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition focus:outline-none" id="btn-user-avatar">
-          <div class="w-8 h-8 rounded-full bg-[#003876] text-white flex items-center justify-center text-xs font-bold shadow-xs">
+          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#003876] text-white flex items-center justify-center text-xs font-bold shadow-xs">
             DC
           </div>
         </button>
@@ -118,12 +118,12 @@
   <!-- ========================================================= -->
   <!-- VISTA 1: HOME -->
   <!-- ========================================================= -->
-  <main id="view-home" class="flex-1 w-full px-6 lg:px-12 py-8 lumina-fade">
-    <div class="mb-8 text-left">
-      <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-2">
+  <main id="view-home" class="flex-1 w-full px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lumina-fade">
+    <div class="mb-6 sm:mb-8 text-left">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight mb-2">
         ¿Qué vamos a gestionar hoy?
       </h1>
-      <p class="text-base text-slate-500">
+      <p class="text-sm sm:text-base text-slate-500">
         Selecciona un módulo para acceder a tus herramientas administrativas.
       </p>
     </div>
@@ -152,41 +152,41 @@
   <!-- ========================================================= -->
   <!-- VISTA 2: MODULE VIEW (ENTRAN DE A 3) -->
   <!-- ========================================================= -->
-  <main id="view-module-ppr" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+  <main id="view-module-ppr" class="flex-1 w-full px-4 sm:px-6 lg:px-12 py-6 hidden lumina-fade">
     <!-- Breadcrumb Nivel 2: Volver al Inicio / Prácticas Profesionales -->
-    <nav class="mb-4 flex items-center">
-      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+    <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
+      <button onclick="navigateTo('home')" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
         <i class="bi bi-arrow-left"></i>
         <span>Volver al Inicio</span>
       </button>
       <span class="text-slate-400 mx-2">/</span>
-      <span class="font-bold text-slate-900 text-sm">Prácticas Profesionales</span>
+      <span class="font-bold text-slate-900 text-xs sm:text-sm">Prácticas Profesionales</span>
     </nav>
 
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 mb-6 relative overflow-hidden">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 sm:p-6 md:p-8 mb-6 relative overflow-hidden">
       <i class="bi bi-briefcase-fill lumina-module-bg-icon"></i>
 
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-4">
-          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-soft-primary flex items-center justify-center text-3xl text-[#4f46e5] shrink-0 shadow-xs">
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+        <div class="flex items-center gap-3.5 sm:gap-4">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-soft-primary flex items-center justify-center text-2xl sm:text-3xl text-[#4f46e5] shrink-0 shadow-xs">
             <i class="bi bi-briefcase-fill"></i>
           </div>
           <div>
-            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Prácticas Profesionales</h2>
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Prácticas Profesionales</h2>
             <p class="text-xs sm:text-sm text-slate-500 mt-0.5 max-w-2xl">
-                  5 interfaces disponibles            
-          </p>
+              5 interfaces disponibles
+            </p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="flex items-center justify-between mb-4">
-      <h3 class="font-bold text-slate-900 text-base">Acciones y Formularios</h3>
+      <h3 class="font-bold text-slate-900 text-sm sm:text-base">Acciones y Módulos de Trabajo</h3>
       <span class="text-xs font-semibold text-slate-500">5 interfaces disponibles</span>
     </div>
 
-    <!-- Grid de Interfaces (ENTRAN DE A 3 COLUMNAS) -->
+    <!-- Grid de Interfaces (ENTRAN DE A 3 COLUMNAS EN PANTALLAS GRANDES) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <!-- 1. Revisión de Postulaciones (Paso 1 del flujo) -->
       <div class="form-action-item-grid p-4 flex items-center" onclick="navigateTo('workspace', 'tab-postulaciones')">
@@ -208,7 +208,7 @@
           <i class="bi bi-clock-history text-blue-600"></i>
         </div>
         <div class="flex-grow min-w-0">
-          <h6 class="font-bold text-slate-900 text-sm truncate">2. Seguimiento en Curso (360h)</h6>
+          <h6 class="font-bold text-slate-900 text-sm truncate">2. Seguimiento en Curso</h6>
           <p class="text-xs text-slate-500 truncate">Ir a la página</p>
         </div>
         <div class="chevron ps-2 shrink-0">
@@ -263,10 +263,10 @@
   <!-- ========================================================= -->
   <!-- VISTA 3: WORKSPACE DE GESTIÓN (TABS EXCLUSIVAMENTE DEL FLUJO) -->
   <!-- ========================================================= -->
-  <main id="view-workspace" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+  <main id="view-workspace" class="flex-1 w-full px-4 sm:px-6 lg:px-12 py-6 hidden lumina-fade">
     <!-- Breadcrumb Completo Solicitado: Volver al inicio / Prácticas Profesionales / Módulo de Gestión Académica -->
     <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
-      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+      <button onclick="navigateTo('home')" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
         <i class="bi bi-arrow-left"></i>
         <span>Volver al Inicio</span>
       </button>
@@ -275,18 +275,21 @@
         Prácticas Profesionales
       </button>
       <span class="text-slate-400 mx-2">/</span>
-      <span class="font-bold text-slate-900 text-sm">Módulo de Gestión Académica</span>
+      <span class="font-bold text-slate-900 text-xs sm:text-sm">Módulo de Gestión Académica</span>
     </nav>
 
-    <!-- Métricas Rápidas en 3 Pastillas del Flujo -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-6">
+    <!-- ========================================================= -->
+    <!-- MÉTRICAS RÁPIDAS: DESKTOP / TABLET (sm: y superior) -->
+    <!-- (DISEÑO Y DISTRIBUCIÓN ORIGINAL 100% INTACTOS) -->
+    <!-- ========================================================= -->
+    <div class="hidden sm:grid sm:grid-cols-3 gap-3.5 mb-6">
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
           <i data-lucide="clock" class="w-5 h-5"></i>
         </div>
         <div>
           <span class="text-[10px] font-bold uppercase text-slate-400 block">Paso 1: En Revisión</span>
-          <span id="metric-pendientes" class="text-lg font-black text-slate-900">3</span>
+          <span id="metric-pendientes" class="text-lg font-black text-slate-900">4</span>
         </div>
       </div>
 
@@ -296,7 +299,7 @@
         </div>
         <div>
           <span class="text-[10px] font-bold uppercase text-slate-400 block">Paso 2: En Curso (360h)</span>
-          <span id="metric-encurso" class="text-lg font-black text-slate-900">4</span>
+          <span id="metric-encurso" class="text-lg font-black text-slate-900">2</span>
         </div>
       </div>
 
@@ -311,8 +314,53 @@
       </div>
     </div>
 
-    <!-- Navegación por Tabs: ÚNICAMENTE LOS 3 PASOS DEL FLUJO (Sin Convocatorias ni Parámetros) -->
-    <div class="border-b border-slate-200 mb-6 flex items-center gap-5 text-xs font-semibold overflow-x-auto pb-px">
+    <!-- ========================================================= -->
+    <!-- MÉTRICAS RÁPIDAS: PANTALLAS PEQUEÑAS (MOBILE EXCLUSIVO) -->
+    <!-- (Acomodado en 1 sola fila de 3 pastillas con texto 100% legible y sin truncar) -->
+    <!-- ========================================================= -->
+    <div class="grid grid-cols-3 gap-2 mb-4 sm:hidden">
+      <!-- Paso 1 Mobile: En Revisión -->
+      <div class="bg-white p-2 sm:p-2.5 rounded-xl border border-slate-200/90 shadow-2xs flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 border border-amber-200/80 flex items-center justify-center shrink-0">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+          </div>
+          <span id="metric-pendientes-mobile" class="text-sm sm:text-base font-black text-slate-900 leading-none">4</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase text-slate-600 leading-tight block whitespace-normal">
+          En Revisión
+        </span>
+      </div>
+
+      <!-- Paso 2 Mobile: En Curso -->
+      <div class="bg-white p-2 sm:p-2.5 rounded-xl border border-slate-200/90 shadow-2xs flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-6 h-6 rounded-lg bg-blue-50 text-[#003876] border border-blue-200/80 flex items-center justify-center shrink-0">
+            <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+          </div>
+          <span id="metric-encurso-mobile" class="text-sm sm:text-base font-black text-slate-900 leading-none">3</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase text-slate-600 leading-tight block whitespace-normal">
+          En Curso
+        </span>
+      </div>
+
+      <!-- Paso 3 Mobile: Acreditadas -->
+      <div class="bg-white p-2 sm:p-2.5 rounded-xl border border-slate-200/90 shadow-2xs flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200/80 flex items-center justify-center shrink-0">
+            <i data-lucide="award" class="w-3.5 h-3.5"></i>
+          </div>
+          <span id="metric-acreditadas-mobile" class="text-sm sm:text-base font-black text-slate-900 leading-none">1</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase text-slate-600 leading-tight block whitespace-normal">
+          Acreditadas
+        </span>
+      </div>
+    </div>
+
+    <!-- Navegación por Tabs: ÚNICAMENTE LOS 3 PASOS DEL FLUJO (Scroll horizontal suave en móviles) -->
+    <div class="border-b border-slate-200 mb-6 flex items-center gap-4 sm:gap-6 text-xs font-semibold overflow-x-auto pb-px">
       <!-- 1. Flujo Paso 1 -->
       <button id="btn-tab-postulaciones" onclick="switchWorkspaceTab('tab-postulaciones')" class="workspace-tab-btn py-3 border-b-2 border-[#003876] text-[#003876] font-bold transition flex items-center gap-2 shrink-0">
         <i data-lucide="inbox" class="w-4 h-4"></i>
@@ -322,7 +370,7 @@
       <!-- 2. Flujo Paso 2 -->
       <button id="btn-tab-seguimiento" onclick="switchWorkspaceTab('tab-seguimiento')" class="workspace-tab-btn py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition flex items-center gap-2 shrink-0">
         <i data-lucide="clock" class="w-4 h-4"></i>
-        <span>2. Seguimiento en Curso (360h)</span>
+        <span>2. Seguimiento en Curso</span>
       </button>
 
       <!-- 3. Flujo Paso 3 -->
@@ -337,11 +385,12 @@
     <!-- ========================================================= -->
     <div id="tab-postulaciones" class="workspace-tab-content">
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50">
-          <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs font-bold text-slate-700 shrink-0">Estado:</span>
-              <select id="select-status-filter" onchange="renderApplications()" class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-semibold text-slate-700 focus:outline-none">
+        <!-- Barra de Filtros Responsive -->
+        <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50/50">
+          <div class="grid grid-cols-1 sm:flex sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <span class="text-xs font-bold text-slate-700 shrink-0 w-16 sm:w-auto">Estado:</span>
+              <select id="select-status-filter" onchange="renderApplications()" class="flex-1 sm:w-auto text-xs border border-slate-300 rounded-xl px-2.5 py-1.5 bg-white font-semibold text-slate-700 focus:outline-none">
                 <option value="ALL">Todos los Estados</option>
                 <option value="EN_REVISION" selected>En Revisión</option>
                 <option value="OBSERVADA">Observadas</option>
@@ -350,9 +399,9 @@
               </select>
             </div>
 
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs font-bold text-slate-700 shrink-0">Modalidad:</span>
-              <select id="select-type-filter" onchange="renderApplications()" class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-semibold text-slate-700 focus:outline-none">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <span class="text-xs font-bold text-slate-700 shrink-0 w-16 sm:w-auto">Modalidad:</span>
+              <select id="select-type-filter" onchange="renderApplications()" class="flex-1 sm:w-auto text-xs border border-slate-300 rounded-xl px-2.5 py-1.5 bg-white font-semibold text-slate-700 focus:outline-none">
                 <option value="ALL">Todas las Modalidades</option>
                 <option value="CONVOCATORIA_CONVENIO">Convenio Vigente UPDS</option>
                 <option value="EMPRESA_SUGERIDA">Propuesta por Estudiante</option>
@@ -360,15 +409,17 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-2">
-            <button onclick="switchWorkspaceTab('tab-seguimiento')" class="text-xs font-bold text-[#003876] hover:underline inline-flex items-center gap-1">
-              <span>Ir al Paso 2: Seguimiento</span>
-              <i class="bi bi-arrow-right"></i>
-            </button>
+          <!-- Buscador integrado para pantallas móviles/tablets -->
+          <div class="block md:hidden w-full">
+            <div class="relative">
+              <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+              <input type="text" id="input-search-admin-mobile" oninput="syncMobileSearch(this.value)" placeholder="Buscar estudiante, RU..." class="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded-xl bg-white focus:outline-none">
+            </div>
           </div>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Vista Desktop: Tabla Tradicional (hidden en mobile) -->
+        <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
@@ -381,9 +432,14 @@
               </tr>
             </thead>
             <tbody id="table-applications-body">
-              <!-- Inyectado vía JS -->
+              <!-- Inyectado vía JS para Desktop -->
             </tbody>
           </table>
+        </div>
+
+        <!-- Vista Mobile: Tarjetas Adaptativas (block en mobile, hidden en md:) -->
+        <div id="container-applications-mobile" class="block md:hidden p-3 space-y-3">
+          <!-- Inyectado vía JS para Mobile -->
         </div>
       </div>
     </div>
@@ -392,27 +448,13 @@
     <!-- TAB 2: SEGUIMIENTO EN CURSO 360h (PASO 2) -->
     <!-- ========================================================= -->
     <div id="tab-seguimiento" class="workspace-tab-content hidden">
-      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs mb-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] font-bold uppercase tracking-wide bg-blue-50 text-[#003876] px-2 py-0.5 rounded border border-blue-100">
-              Paso 2 del Flujo
-            </span>
-            <h3 class="text-sm font-bold text-slate-900">Estudiantes en Práctica Activa (360 Horas)</h3>
-          </div>
-          <p class="text-xs text-slate-500 mt-0.5">Control de horas, tutoría docente asignada e informes de seguimiento.</p>
-        </div>
-
-        <div class="flex items-center gap-3 w-full sm:w-auto">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
           <input type="text" id="input-search-seguimiento" oninput="renderSeguimiento()" placeholder="Buscar en prácticas activas..." class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-medium text-slate-700 focus:outline-none w-full sm:w-56">
-          <button onclick="switchWorkspaceTab('tab-acreditaciones')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition inline-flex items-center gap-1">
-            <span>Paso 3: Acreditación</span>
-            <i class="bi bi-arrow-right"></i>
-          </button>
         </div>
       </div>
 
-      <!-- Tarjetas de Estudiantes en Práctica -->
+      <!-- Tarjetas de Estudiantes en Práctica (Grid 3 cols en lg, 2 en md, 1 en mobile) -->
       <div id="container-seguimiento-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Inyectado vía JS -->
       </div>
@@ -423,27 +465,14 @@
     <!-- ========================================================= -->
     <div id="tab-acreditaciones" class="workspace-tab-content hidden">
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-bold uppercase tracking-wide bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-100">
-                Paso 3 Final del Flujo
-              </span>
-              <h3 class="text-xs sm:text-sm font-bold text-slate-900">Evaluación de Informes Finales y Registro de Calificación</h3>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-0.5">Acreditación Oficial UPDS con Rúbrica Académica (1 a 100 puntos) y Actas</p>
-          </div>
-
-          <div class="flex items-center gap-3 w-full sm:w-auto">
+        <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
             <input type="text" id="input-search-acreditaciones" oninput="renderAcreditaciones()" placeholder="Buscar estudiante..." class="text-xs border border-slate-300 rounded-xl px-3 py-1.5 bg-white font-medium text-slate-700 focus:outline-none w-full sm:w-56">
-            <button onclick="switchWorkspaceTab('tab-seguimiento')" class="shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition inline-flex items-center gap-1">
-              <i class="bi bi-arrow-left"></i>
-              <span>Volver a Paso 2</span>
-            </button>
           </div>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Vista Desktop: Tabla Tradicional (hidden en mobile) -->
+        <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
@@ -456,9 +485,14 @@
               </tr>
             </thead>
             <tbody id="table-acreditaciones-body">
-              <!-- Inyectado vía JS -->
+              <!-- Inyectado vía JS para Desktop -->
             </tbody>
           </table>
+        </div>
+
+        <!-- Vista Mobile: Tarjetas Adaptativas (block en mobile, hidden en md:) -->
+        <div id="container-acreditaciones-mobile" class="block md:hidden p-3 space-y-3">
+          <!-- Inyectado vía JS para Mobile -->
         </div>
       </div>
     </div>
@@ -467,10 +501,10 @@
   <!-- ========================================================= -->
   <!-- VISTA 4: CONVOCATORIAS & CUPOS (MÓDULO INDEPENDIENTE) -->
   <!-- ========================================================= -->
-  <main id="view-convocatorias" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+  <main id="view-convocatorias" class="flex-1 w-full px-4 sm:px-6 lg:px-12 py-6 hidden lumina-fade">
     <!-- Breadcrumb Completo Solicitado: Volver al inicio / Prácticas Profesionales / Convocatorias & Cupos -->
     <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
-      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+      <button onclick="navigateTo('home')" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
         <i class="bi bi-arrow-left"></i>
         <span>Volver al Inicio</span>
       </button>
@@ -479,21 +513,21 @@
         Prácticas Profesionales
       </button>
       <span class="text-slate-400 mx-2">/</span>
-      <span class="font-bold text-slate-900 text-sm">Convocatorias & Cupos</span>
+      <span class="font-bold text-slate-900 text-xs sm:text-sm">Convocatorias & Cupos</span>
     </nav>
 
-    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div>
           <div class="flex items-center gap-2">
             <span class="text-[10px] font-bold uppercase tracking-wide bg-purple-50 text-purple-700 px-2 py-0.5 rounded border border-purple-100">
               Gestión Institucional
             </span>
-            <h3 class="text-base font-bold text-slate-900">Convocatorias Institucionales Vigentes UPDS</h3>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">Convocatorias Institucionales Vigentes UPDS</h3>
           </div>
           <p class="text-xs text-slate-500 mt-0.5">Plazas disponibles y convenios marco para estudiantes de la Facultad de Ingeniería</p>
         </div>
-        <button onclick="openNuevaConvocatoriaModal()" class="px-4 py-2 bg-[#003876] hover:bg-[#002855] text-white text-xs font-bold rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
+        <button onclick="openNuevaConvocatoriaModal()" class="self-start sm:self-auto px-4 py-2 bg-[#003876] hover:bg-[#002855] text-white text-xs font-bold rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
           <i data-lucide="plus" class="w-4 h-4"></i>
           <span>Nueva Convocatoria</span>
         </button>
@@ -508,10 +542,10 @@
   <!-- ========================================================= -->
   <!-- VISTA 5: PARÁMETROS DE COBRO GALILEO (MÓDULO INDEPENDIENTE) -->
   <!-- ========================================================= -->
-  <main id="view-parametros" class="flex-1 w-full px-6 lg:px-12 py-6 hidden lumina-fade">
+  <main id="view-parametros" class="flex-1 w-full px-4 sm:px-6 lg:px-12 py-6 hidden lumina-fade">
     <!-- Breadcrumb Completo Solicitado: Volver al inicio / Prácticas Profesionales / Parámetros de Cobro -->
     <nav class="mb-4 flex items-center flex-wrap gap-y-1.5">
-      <button onclick="navigateTo('home')" class="px-3 py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
+      <button onclick="navigateTo('home')" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 transition inline-flex items-center gap-1.5">
         <i class="bi bi-arrow-left"></i>
         <span>Volver al Inicio</span>
       </button>
@@ -520,17 +554,17 @@
         Prácticas Profesionales
       </button>
       <span class="text-slate-400 mx-2">/</span>
-      <span class="font-bold text-slate-900 text-sm">Parámetros de Cobro</span>
+      <span class="font-bold text-slate-900 text-xs sm:text-sm">Parámetros de Cobro</span>
     </nav>
 
-    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
         <div>
           <div class="flex items-center gap-2">
             <span class="text-[10px] font-bold uppercase tracking-wide bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-100">
               Configuración del Sistema
             </span>
-            <h3 class="text-base font-bold text-slate-900">Parámetros de Cobro — Integración Galileo</h3>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">Parámetros de Cobro — Integración Galileo</h3>
           </div>
           <p class="text-xs text-slate-500 mt-0.5">
             Edita los valores contables y aranceles que aparecen bloqueados en el modal de cobro Galileo al aprobar postulaciones.
@@ -542,7 +576,7 @@
         </button>
       </div>
 
-      <!-- Grid de Configuración: Formulario a la izquierda y Previsualización a la derecha -->
+      <!-- Grid de Configuración: En desktop lado a lado (7/5), en mobile stacked (12/12) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         <!-- Formulario Editable de Parámetros -->
@@ -618,7 +652,7 @@
           </div>
 
           <div class="pt-2 flex justify-end">
-            <button type="submit" class="px-6 py-2.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-2">
+            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center justify-center gap-2">
               <i data-lucide="check" class="w-4 h-4"></i>
               <span>Aplicar y Guardar Cambios</span>
             </button>
@@ -631,7 +665,7 @@
             Previsualización de Orden Galileo
           </span>
 
-          <div class="p-5 border border-slate-200 rounded-2xl bg-white shadow-xs space-y-4">
+          <div class="p-4 sm:p-5 border border-slate-200 rounded-2xl bg-white shadow-xs space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
               <span class="text-xs font-bold text-slate-800">Detalles de Cobro (Demostrativo)</span>
               <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
@@ -639,14 +673,14 @@
               </span>
             </div>
 
-            <!-- Bloque Pago #1 Preview -->
+            <!-- Bloque Pago #1 Preview (Responsive en móvil) -->
             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5 text-xs">
               <div class="flex items-center justify-between font-bold text-slate-700 text-[11px]">
                 <span>Pago #1</span>
                 <i class="bi bi-trash3 text-slate-300 text-xs"></i>
               </div>
 
-              <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
                 <div>
                   <span class="text-[10px] text-slate-400 block font-medium">Servicio</span>
                   <span class="font-bold text-slate-800" id="prev-galileo-servicio">CUOTA</span>
@@ -686,33 +720,33 @@
   </main>
 
   <!-- ========================================================= -->
-  <!-- MODAL 1: REVISIÓN DE EXPEDIENTE (CON SELECT DE DOCENTE TUTOR) -->
+  <!-- MODAL 1: REVISIÓN DE EXPEDIENTE (RESPONSIVE EN MÓVILES) -->
   <!-- ========================================================= -->
-  <div id="modal-expediente" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-expediente" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-xl w-full overflow-hidden max-h-[92vh] flex flex-col">
-      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+      <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 shrink-0">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#003876] border border-blue-200 flex items-center justify-center font-bold text-xs">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-50 text-[#003876] border border-blue-200 flex items-center justify-center font-bold text-xs shrink-0">
             <i data-lucide="file-search" class="w-4 h-4"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900">Revisión de Expediente Académico</h4>
-            <span class="text-[11px] text-slate-400">Paso 1: Validación y Asignación de Docente Tutor</span>
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900">Revisión de Expediente Académico</h4>
+            <span class="text-[10px] sm:text-[11px] text-slate-400">Paso 1: Validación y Asignación de Docente Tutor</span>
           </div>
         </div>
-        <button onclick="closeExpedienteModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <button onclick="closeExpedienteModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition shrink-0">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <div class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
+      <div class="p-4 sm:p-6 space-y-4 text-xs overflow-y-auto flex-1">
         <!-- Ficha del Estudiante -->
         <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-900 text-sm" id="modal-student-name">Carlos Daniel Cuellar</span>
             <span class="text-[10px] font-bold uppercase tracking-wider text-[#003876] bg-blue-50 px-2 py-0.5 rounded border border-blue-100" id="modal-student-ru">104077</span>
           </div>
-          <div class="flex items-center justify-between text-slate-500 text-[11px]">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-slate-500 text-[11px]">
             <span>Carrera: <strong class="text-slate-700" id="modal-student-career">Ingeniería de Sistemas</strong></span>
             <span>Semestre: <strong class="text-slate-700" id="modal-student-semestre">8vo Semestre</strong></span>
           </div>
@@ -733,7 +767,7 @@
           <div class="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5">
             <div class="font-bold text-slate-800 text-sm" id="modal-institution">Banco Unión S.A.</div>
             <div class="text-[11px] text-slate-500" id="modal-horario">Turno Mañana • 360 Horas Académicas</div>
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px]">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[11px]">
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-400 block">NIT de Empresa</span>
                 <span class="font-semibold text-slate-700" id="modal-empresa-nit">1020304050</span>
@@ -742,7 +776,7 @@
                 <span class="text-[10px] uppercase font-bold text-slate-400 block">Cargo Asignado</span>
                 <span class="font-semibold text-slate-700 truncate block" id="modal-empresa-cargo">Desarrollador Junior</span>
               </div>
-              <div class="col-span-2">
+              <div class="col-span-1 sm:col-span-2">
                 <span class="text-[10px] uppercase font-bold text-slate-400 block">Representante / Supervisor</span>
                 <span class="font-semibold text-slate-700" id="modal-empresa-rep">Lic. Fernando Gómez</span>
               </div>
@@ -754,11 +788,11 @@
         <div>
           <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Formulario Oficial Adjunto</span>
           <div class="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <i data-lucide="file-check" class="w-4 h-4 text-emerald-600"></i>
-              <span class="font-semibold text-emerald-900 text-[11px]" id="modal-doc-name">Formulario_Apertura_Firmado.pdf</span>
+            <div class="flex items-center gap-2 min-w-0">
+              <i data-lucide="file-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+              <span class="font-semibold text-emerald-900 text-[11px] truncate" id="modal-doc-name">Formulario_Apertura_Firmado.pdf</span>
             </div>
-            <button onclick="showToast('Visualizando documento adjunto...', 'info')" class="text-[11px] font-bold text-emerald-700 underline hover:text-emerald-900">
+            <button onclick="showToast('Visualizando documento adjunto...', 'info')" class="text-[11px] font-bold text-emerald-700 underline hover:text-emerald-900 shrink-0 ms-2">
               Descargar / Ver PDF
             </button>
           </div>
@@ -781,17 +815,17 @@
         </div>
       </div>
 
-      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-3">
-        <button onclick="openObservarModal()" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl transition flex items-center gap-1.5">
+      <div class="p-3.5 sm:p-4 border-t border-slate-100 bg-slate-50 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <button onclick="openObservarModal()" class="px-3.5 sm:px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs rounded-xl transition flex items-center gap-1.5">
           <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
           <span>Observar</span>
         </button>
 
         <div class="flex items-center gap-2">
-          <button onclick="closeExpedienteModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+          <button onclick="closeExpedienteModal()" class="px-3.5 sm:px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
             Cerrar
           </button>
-          <button onclick="aprobarPostulacionConGalileo()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
+          <button onclick="aprobarPostulacionConGalileo()" class="px-4 sm:px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
             <i data-lucide="check" class="w-4 h-4"></i>
             <span>Aprobar Postulación</span>
           </button>
@@ -801,31 +835,31 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- MODAL 2: GALILEO DEMOSTRATIVO (BLOQUEADO) -->
+  <!-- MODAL 2: GALILEO DEMOSTRATIVO (BLOQUEADO, RESPONSIVE) -->
   <!-- ========================================================= -->
-  <div id="modal-galileo" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-galileo" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden max-h-[92vh] flex flex-col">
       <!-- Header Estilo Galileo / SAADS -->
-      <div class="px-6 py-4 border-b border-slate-200 bg-slate-100 flex items-center justify-between">
+      <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 bg-slate-100 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-[#003876] text-white flex items-center justify-center text-xs font-bold">
+          <div class="w-8 h-8 rounded-lg bg-[#003876] text-white flex items-center justify-center text-xs font-bold shrink-0">
             <i class="bi bi-cash-stack"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900">Emisión de Orden de Cobro (Galileo)</h4>
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900">Emisión de Orden de Cobro (Galileo)</h4>
             <span class="text-[10px] text-slate-400">Integración Administrativa UPDS • Modo Demostrativo</span>
           </div>
         </div>
-        <button onclick="closeGalileoModal()" class="w-7 h-7 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition">
+        <button onclick="closeGalileoModal()" class="w-7 h-7 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center transition shrink-0">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
       <!-- Formulario Idéntico a la Foto Enviada por el Usuario (Bloqueado) -->
-      <div class="p-6 space-y-4 text-xs overflow-y-auto flex-1 bg-white select-none">
+      <div class="p-4 sm:p-6 space-y-4 text-xs overflow-y-auto flex-1 bg-white select-none">
         
         <!-- Fila 1: Persona & Inscripción Carrera -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
           <!-- Persona -->
           <div class="relative">
             <span class="absolute -top-2 left-3 bg-white px-1 text-[11px] font-medium text-slate-500">Persona</span>
@@ -847,7 +881,7 @@
         </div>
 
         <!-- Fila 2: Observación & Fecha Validez -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
           <!-- Observación -->
           <div class="relative">
             <span class="absolute -top-2 left-3 bg-white px-1 text-[11px] font-medium text-slate-500">Observación</span>
@@ -870,7 +904,7 @@
           <h5 class="text-sm font-bold text-slate-900 mb-2">Detalles de Cobro</h5>
 
           <!-- Bloque Pago #1 -->
-          <div class="p-4 border border-slate-200 rounded-xl bg-slate-50/50 space-y-3">
+          <div class="p-3.5 sm:p-4 border border-slate-200 rounded-xl bg-slate-50/50 space-y-3">
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-slate-700">Pago #1</span>
               <button type="button" disabled class="text-slate-300 cursor-not-allowed">
@@ -935,23 +969,23 @@
           </div>
         </div>
 
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-slate-500 text-[11px]">
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-slate-500 text-[11px]">
           <div class="flex items-center gap-2">
-            <i class="bi bi-lock-fill text-slate-400 text-xs"></i>
-            <span>Valores cargados desde <strong>Parámetros de Cobro</strong>. Al dar clic en <strong>Aceptar</strong>, la práctica entrará directamente en curso.</span>
+            <i class="bi bi-lock-fill text-slate-400 text-xs shrink-0"></i>
+            <span>Valores cargados desde <strong>Parámetros de Cobro</strong>. Al dar clic en <strong>Aceptar</strong>, la práctica entrará en curso.</span>
           </div>
-          <button type="button" onclick="closeGalileoModal(); navigateTo('parametros');" class="text-[#003876] font-bold hover:underline shrink-0 text-xs">
+          <button type="button" onclick="closeGalileoModal(); navigateTo('parametros');" class="text-[#003876] font-bold hover:underline shrink-0 text-xs self-end sm:self-auto">
             Editar Parámetros
           </button>
         </div>
       </div>
 
       <!-- Footer con Aceptar y Cancelar -->
-      <div class="px-6 py-3.5 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-3">
-        <button onclick="closeGalileoModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 transition">
+      <div class="px-4 sm:px-6 py-3.5 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2.5 sm:gap-3 shrink-0">
+        <button onclick="closeGalileoModal()" class="px-3.5 sm:px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-300 rounded-xl hover:bg-slate-100 transition">
           Cancelar
         </button>
-        <button onclick="confirmarAprobacionGalileo()" class="px-6 py-2 text-xs font-bold text-white bg-[#003876] hover:bg-[#002855] rounded-xl shadow-xs transition transform active:scale-95 flex items-center gap-1.5">
+        <button onclick="confirmarAprobacionGalileo()" class="px-5 sm:px-6 py-2 text-xs font-bold text-white bg-[#003876] hover:bg-[#002855] rounded-xl shadow-xs transition transform active:scale-95 flex items-center gap-1.5">
           <i data-lucide="check" class="w-4 h-4"></i>
           <span>Aceptar</span>
         </button>
@@ -962,7 +996,7 @@
   <!-- ========================================================= -->
   <!-- MODAL 3: OBSERVAR SOLICITUD -->
   <!-- ========================================================= -->
-  <div id="modal-observar" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-observar" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden">
       <div class="p-4 border-b border-slate-100 bg-amber-50/70 flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -974,7 +1008,7 @@
         </button>
       </div>
 
-      <div class="p-5 space-y-3 text-xs">
+      <div class="p-4 sm:p-5 space-y-3 text-xs">
         <p class="text-slate-600">
           Estudiante: <strong id="obs-student-name" class="text-slate-900">Carlos Daniel Cuellar</strong>
         </p>
@@ -998,7 +1032,7 @@
   <!-- ========================================================= -->
   <!-- MODAL 4: REGISTRAR AVANCE DE HORAS (SEGUIMIENTO) -->
   <!-- ========================================================= -->
-  <div id="modal-avance-horas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-avance-horas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden">
       <div class="p-4 border-b border-slate-100 bg-blue-50/70 flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -1010,7 +1044,7 @@
         </button>
       </div>
 
-      <div class="p-5 space-y-3.5 text-xs">
+      <div class="p-4 sm:p-5 space-y-3.5 text-xs">
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
           <div class="font-bold text-slate-900" id="avance-student-name">Sofia Loren Soria</div>
           <div class="text-[11px] text-slate-500">RU: <strong id="avance-student-ru">102890</strong></div>
@@ -1040,7 +1074,7 @@
   <!-- ========================================================= -->
   <!-- MODAL 5: CAMBIAR DOCENTE TUTOR -->
   <!-- ========================================================= -->
-  <div id="modal-asignar-docente" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-asignar-docente" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden">
       <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -1052,7 +1086,7 @@
         </button>
       </div>
 
-      <div class="p-5 space-y-3.5 text-xs">
+      <div class="p-4 sm:p-5 space-y-3.5 text-xs">
         <p class="text-slate-600">
           Estudiante: <strong id="docente-student-name" class="text-slate-900">Sofia Loren Soria</strong>
         </p>
@@ -1076,26 +1110,26 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- MODAL 6: CALIFICACIÓN Y RÚBRICA (ACREDITACIÓN) -->
+  <!-- MODAL 6: CALIFICACIÓN Y RÚBRICA (ACREDITACIÓN, RESPONSIVE) -->
   <!-- ========================================================= -->
-  <div id="modal-calificacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-calificacion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden max-h-[92vh] flex flex-col">
-      <div class="p-5 border-b border-slate-100 bg-emerald-50/70 flex items-center justify-between">
+      <div class="p-4 sm:p-5 border-b border-slate-100 bg-emerald-50/70 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0">
             <i data-lucide="award" class="w-4 h-4"></i>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900">Rúbrica de Acreditación Oficial UPDS</h4>
-            <span class="text-[11px] text-slate-500">Calificación de 1 a 100 Puntos y Acta</span>
+            <h4 class="text-xs sm:text-sm font-bold text-slate-900">Rúbrica de Acreditación Oficial UPDS</h4>
+            <span class="text-[10px] sm:text-[11px] text-slate-500">Calificación de 1 a 100 Puntos y Acta</span>
           </div>
         </div>
-        <button onclick="closeCalificacionModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <button onclick="closeCalificacionModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition shrink-0">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <div class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
+      <div class="p-4 sm:p-6 space-y-4 text-xs overflow-y-auto flex-1">
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
           <div class="flex items-center justify-between font-bold text-slate-900">
             <span id="calif-student-name">Mateo Fernando Aguilera</span>
@@ -1137,7 +1171,7 @@
             <span id="calif-criterio-badge" class="text-xs font-bold text-emerald-700">Excelente / Con Distinción</span>
           </div>
           <div class="text-right">
-            <span id="calif-total-score" class="text-3xl font-black text-emerald-800">95</span>
+            <span id="calif-total-score" class="text-2xl sm:text-3xl font-black text-emerald-800">95</span>
             <span class="text-xs font-semibold text-emerald-600">/ 100</span>
           </div>
         </div>
@@ -1148,11 +1182,11 @@
         </div>
       </div>
 
-      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
-        <button onclick="closeCalificacionModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+      <div class="p-3.5 sm:p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2 shrink-0">
+        <button onclick="closeCalificacionModal()" class="px-3.5 sm:px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
           Cancelar
         </button>
-        <button onclick="submitCalificacion()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
+        <button onclick="submitCalificacion()" class="px-4 sm:px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
           <i data-lucide="check-check" class="w-4 h-4"></i>
           <span>Firmar Acta y Acreditar</span>
         </button>
@@ -1161,24 +1195,24 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- MODAL 7: VISTA PREVIA DEL ACTA OFICIAL -->
+  <!-- MODAL 7: VISTA PREVIA DEL ACTA OFICIAL (RESPONSIVE) -->
   <!-- ========================================================= -->
-  <div id="modal-acta-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden">
-      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+  <div id="modal-acta-preview" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="p-3.5 sm:p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50 shrink-0">
         <div class="flex items-center gap-2">
-          <img src="logosaadsv2.jpeg" alt="UPDS" onerror="this.src='logo-upds.jpeg'" class="w-6 h-6 rounded">
-          <h4 class="text-xs font-bold text-slate-900">Acta Oficial de Acreditación de Práctica Profesional</h4>
+          <img src="logosaadsv2.jpeg" alt="UPDS" onerror="this.src='logo-upds.jpeg'" class="w-6 h-6 rounded shrink-0">
+          <h4 class="text-xs font-bold text-slate-900 truncate">Acta Oficial de Acreditación PPR</h4>
         </div>
-        <button onclick="closeActaModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <button onclick="closeActaModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition shrink-0">
           <i data-lucide="x" class="w-3.5 h-3.5"></i>
         </button>
       </div>
 
-      <div class="p-6 space-y-4 text-xs">
+      <div class="p-4 sm:p-6 space-y-4 text-xs overflow-y-auto flex-1">
         <div class="text-center pb-3 border-b border-slate-100">
           <span class="text-[10px] font-bold uppercase text-[#003876] tracking-widest block">Universidad Privada Domingo Savio</span>
-          <h3 class="text-base font-black text-slate-900 mt-0.5">Acta de Calificación y Acreditación PPR</h3>
+          <h3 class="text-sm sm:text-base font-black text-slate-900 mt-0.5">Acta de Calificación y Acreditación PPR</h3>
           <span class="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200 inline-block mt-1" id="acta-modal-num">PPR-ACTA-2026-0038</span>
         </div>
 
@@ -1196,17 +1230,17 @@
           </p>
         </div>
 
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+        <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[10px] text-slate-400">
           <span>Verificación Blockchain SAADS: OK</span>
           <span>Firma Digital Certificada UPDS</span>
         </div>
       </div>
 
-      <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+      <div class="p-3.5 sm:p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2 shrink-0">
         <button onclick="closeActaModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
           Cerrar
         </button>
-        <button onclick="showToast('Descargando Acta Oficial Certificada en PDF...', 'success')" class="px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
+        <button onclick="showToast('Descargando Acta Oficial Certificada en PDF...', 'success')" class="px-4 sm:px-5 py-2 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl shadow-xs transition inline-flex items-center gap-1.5">
           <i data-lucide="download" class="w-3.5 h-3.5"></i>
           <span>Descargar Acta PDF</span>
         </button>
@@ -1215,27 +1249,27 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- MODAL 8: NUEVA CONVOCATORIA -->
+  <!-- MODAL 8: NUEVA CONVOCATORIA (RESPONSIVE) -->
   <!-- ========================================================= -->
-  <div id="modal-nueva-convocatoria" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-nueva-convocatoria" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden max-h-[92vh] flex flex-col">
-      <div class="p-4 border-b border-slate-100 bg-purple-50/70 flex items-center justify-between">
+      <div class="p-4 border-b border-slate-100 bg-purple-50/70 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
           <i data-lucide="building-gear" class="w-4 h-4 text-purple-700"></i>
-          <h4 class="text-sm font-bold text-slate-900">Publicar Nueva Convocatoria Institucional</h4>
+          <h4 class="text-xs sm:text-sm font-bold text-slate-900">Publicar Nueva Convocatoria Institucional</h4>
         </div>
-        <button onclick="closeNuevaConvocatoriaModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <button onclick="closeNuevaConvocatoriaModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition shrink-0">
           <i data-lucide="x" class="w-3.5 h-3.5"></i>
         </button>
       </div>
 
-      <form onsubmit="submitNuevaConvocatoria(event)" class="p-6 space-y-3.5 text-xs overflow-y-auto flex-1">
+      <form onsubmit="submitNuevaConvocatoria(event)" class="p-4 sm:p-6 space-y-3.5 text-xs overflow-y-auto flex-1">
         <div>
           <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Razón Social o Empresa *</label>
           <input required type="text" id="new-conv-empresa" placeholder="Ej: Laboratorios Bagó de Bolivia S.A." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none">
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Rubro *</label>
             <select required id="new-conv-rubro" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none bg-white">
@@ -1252,7 +1286,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-[11px] font-bold uppercase text-slate-700 mb-1">Plazas Ofertadas *</label>
             <input required type="number" id="new-conv-plazas" min="1" max="50" value="4" class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none">
@@ -1268,7 +1302,7 @@
           <textarea id="new-conv-desc" rows="3" placeholder="Requisitos, tecnologías o áreas donde se desempeñará el practicante..." class="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#003876] focus:outline-none"></textarea>
         </div>
 
-        <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2 shrink-0">
           <button type="button" onclick="closeNuevaConvocatoriaModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
             Cancelar
           </button>
@@ -1283,7 +1317,7 @@
   <!-- ========================================================= -->
   <!-- MODAL 9: EDITAR PLAZAS -->
   <!-- ========================================================= -->
-  <div id="modal-editar-plazas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden animate-in fade-in duration-200">
+  <div id="modal-editar-plazas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 hidden animate-in fade-in duration-200">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-sm w-full overflow-hidden">
       <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
         <h4 class="text-sm font-bold text-slate-900">Modificar Cupos de Práctica</h4>
@@ -1292,7 +1326,7 @@
         </button>
       </div>
 
-      <div class="p-5 space-y-3.5 text-xs">
+      <div class="p-4 sm:p-5 space-y-3.5 text-xs">
         <div>
           <span class="font-bold text-slate-900 block" id="edit-plazas-empresa">Banco Unión S.A.</span>
           <span class="text-slate-500 text-[11px]" id="edit-plazas-ocupadas">3 ocupadas actualmente</span>

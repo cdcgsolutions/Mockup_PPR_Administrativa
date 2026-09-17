@@ -2,6 +2,7 @@
    SAADS v2 - PANEL ADMINISTRATIVO DE PRÁCTICAS PROFESIONALES (UPDS)
    Flujo Académico: Postulación -> Docente -> Galileo -> Seguimiento -> Acreditación
    Módulos Externos al Flujo: Convocatorias & Cupos | Parámetros de Cobro
+   Totalmente Adaptativo: Desktop (>=768px) y Mobile (<768px)
    ================================================================= */
 
 // Router y Estado Global
@@ -476,6 +477,7 @@ function updateMetrics() {
   const enCurso = studentApplications.filter(a => a.statusKey === 'EN_CURSO').length;
   const acreditadas = studentApplications.filter(a => a.statusKey === 'ACREDITADA').length;
 
+  // Desktop Elements
   const mPend = document.getElementById('metric-pendientes');
   const mCur = document.getElementById('metric-encurso');
   const mAcr = document.getElementById('metric-acreditadas');
@@ -483,18 +485,34 @@ function updateMetrics() {
   if (mPend) mPend.innerText = pendientes;
   if (mCur) mCur.innerText = enCurso;
   if (mAcr) mAcr.innerText = acreditadas;
+
+  // Mobile Elements (Bloque exclusivo para pantallas pequeñas)
+  const mPendMob = document.getElementById('metric-pendientes-mobile');
+  const mCurMob = document.getElementById('metric-encurso-mobile');
+  const mAcrMob = document.getElementById('metric-acreditadas-mobile');
+
+  if (mPendMob) mPendMob.innerText = pendientes;
+  if (mCurMob) mCurMob.innerText = enCurso;
+  if (mAcrMob) mAcrMob.innerText = acreditadas;
+}
+
+function syncMobileSearch(val) {
+  const desktopInput = document.getElementById('input-search-admin');
+  if (desktopInput) desktopInput.value = val;
+  renderApplications();
 }
 
 /* =================================================================
    TAB 1: REVISIÓN DE POSTULACIONES (PASO 1 DEL FLUJO)
+   (Renderiza tanto la tabla Desktop como las tarjetas Mobile)
    ================================================================= */
 function renderApplications() {
   const tbody = document.getElementById('table-applications-body');
-  if (!tbody) return;
+  const mobileContainer = document.getElementById('container-applications-mobile');
 
   const statusFilter = document.getElementById('select-status-filter')?.value || 'ALL';
   const typeFilter = document.getElementById('select-type-filter')?.value || 'ALL';
-  const searchInput = document.getElementById('input-search-admin')?.value.toLowerCase().trim() || '';
+  const searchInput = (document.getElementById('input-search-admin')?.value || document.getElementById('input-search-admin-mobile')?.value || '').toLowerCase().trim();
 
   const filtered = studentApplications.filter(app => {
     const matchStatus = (statusFilter === 'ALL') || (app.statusKey === statusFilter);
@@ -507,62 +525,112 @@ function renderApplications() {
     return matchStatus && matchType && matchSearch;
   });
 
-  if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-xs text-slate-400">No se encontraron solicitudes con los filtros aplicados.</td></tr>`;
-    return;
+  // 1. Render para Desktop (Tabla Tradicional)
+  if (tbody) {
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-xs text-slate-400">No se encontraron solicitudes con los filtros aplicados.</td></tr>`;
+    } else {
+      tbody.innerHTML = filtered.map(app => {
+        let statusBadge = getStatusBadge(app);
+        const typeBadge = app.type === 'CONVOCATORIA_CONVENIO' 
+          ? `<span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">Convenio UPDS</span>` 
+          : `<span class="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Propuesta Estudiante</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition text-xs border-b border-slate-100">
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-900">${app.studentName}</div>
+              <div class="text-[11px] text-slate-400">RU: <strong>${app.ru}</strong> • ${app.career}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-semibold text-slate-800 truncate max-w-[220px]">${app.institution}</div>
+              <div class="mt-0.5">${typeBadge}</div>
+            </td>
+            <td class="py-3 px-4 text-slate-500 font-medium">
+              ${app.date}
+            </td>
+            <td class="py-3 px-4">
+              ${statusBadge}
+            </td>
+            <td class="py-3 px-4">
+              <button onclick="showToast('Abriendo ${app.docStatus}', 'info')" class="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#003876] font-medium text-[11px] bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg transition">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-[#003876]"></i>
+                <span class="truncate max-w-[130px]">${app.docStatus}</span>
+              </button>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <button onclick="openExpedienteModal('${app.id}')" class="px-3.5 py-1.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl transition inline-flex items-center gap-1 shadow-xs">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>Gestionar</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
-  tbody.innerHTML = filtered.map(app => {
-    let statusBadge = '';
-    if (app.statusKey === 'EN_REVISION') {
-      statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>En Revisión</span>`;
-    } else if (app.statusKey === 'OBSERVADA') {
-      statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Observada</span>`;
-    } else if (app.statusKey === 'EN_CURSO') {
-      statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-[#003876] border border-blue-200"><span class="w-1.5 h-1.5 rounded-full bg-[#003876]"></span>En Curso (${app.horasRealizadas}h)</span>`;
-    } else if (app.statusKey === 'CONCLUIDA') {
-      statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>Informe Final</span>`;
-    } else if (app.statusKey === 'ACREDITADA') {
-      statusBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Acreditada (${app.notaFinal}/100)</span>`;
+  // 2. Render para Mobile (Tarjetas Adaptativas)
+  if (mobileContainer) {
+    if (filtered.length === 0) {
+      mobileContainer.innerHTML = `<div class="text-center py-8 text-xs text-slate-400">No se encontraron solicitudes.</div>`;
+    } else {
+      mobileContainer.innerHTML = filtered.map(app => {
+        let statusBadge = getStatusBadge(app);
+        const typeBadge = app.type === 'CONVOCATORIA_CONVENIO' 
+          ? `<span class="text-[9px] font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">Convenio</span>` 
+          : `<span class="text-[9px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">Propuesta</span>`;
+
+        return `
+          <div class="p-3.5 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <h5 class="font-bold text-slate-900 text-sm truncate">${app.studentName}</h5>
+                <p class="text-[11px] text-slate-400">RU: <strong>${app.ru}</strong> • ${app.career}</p>
+              </div>
+              <div class="shrink-0">${statusBadge}</div>
+            </div>
+
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200/60 text-xs space-y-1">
+              <div class="font-semibold text-slate-800 truncate">${app.institution}</div>
+              <div class="flex items-center justify-between text-[10px] text-slate-500">
+                <span>${typeBadge}</span>
+                <span>Postulado: ${app.date}</span>
+              </div>
+            </div>
+
+            <div class="pt-1 flex items-center justify-between gap-2">
+              <button onclick="showToast('Abriendo ${app.docStatus}', 'info')" class="flex-1 inline-flex items-center justify-center gap-1.5 text-slate-600 hover:text-[#003876] font-medium text-[11px] bg-slate-100 hover:bg-slate-200 py-1.5 px-2 rounded-xl transition truncate">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-[#003876] shrink-0"></i>
+                <span class="truncate">${app.docStatus}</span>
+              </button>
+              <button onclick="openExpedienteModal('${app.id}')" class="px-4 py-1.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl transition inline-flex items-center gap-1 shadow-xs shrink-0">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>Gestionar</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
-
-    const typeBadge = app.type === 'CONVOCATORIA_CONVENIO' 
-      ? `<span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">Convenio UPDS</span>` 
-      : `<span class="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Propuesta Estudiante</span>`;
-
-    return `
-      <tr class="hover:bg-slate-50/80 transition text-xs border-b border-slate-100">
-        <td class="py-3 px-4">
-          <div class="font-bold text-slate-900">${app.studentName}</div>
-          <div class="text-[11px] text-slate-400">RU: <strong>${app.ru}</strong> • ${app.career}</div>
-        </td>
-        <td class="py-3 px-4">
-          <div class="font-semibold text-slate-800 truncate max-w-[220px]">${app.institution}</div>
-          <div class="mt-0.5">${typeBadge}</div>
-        </td>
-        <td class="py-3 px-4 text-slate-500 font-medium">
-          ${app.date}
-        </td>
-        <td class="py-3 px-4">
-          ${statusBadge}
-        </td>
-        <td class="py-3 px-4">
-          <button onclick="showToast('Abriendo ${app.docStatus}', 'info')" class="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#003876] font-medium text-[11px] bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg transition">
-            <i data-lucide="file-text" class="w-3.5 h-3.5 text-[#003876]"></i>
-            <span class="truncate max-w-[130px]">${app.docStatus}</span>
-          </button>
-        </td>
-        <td class="py-3 px-4 text-right">
-          <button onclick="openExpedienteModal('${app.id}')" class="px-3.5 py-1.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl transition inline-flex items-center gap-1 shadow-xs">
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            <span>Gestionar</span>
-          </button>
-        </td>
-      </tr>
-    `;
-  }).join('');
+  }
 
   lucide.createIcons();
+}
+
+function getStatusBadge(app) {
+  if (app.statusKey === 'EN_REVISION') {
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>En Revisión</span>`;
+  } else if (app.statusKey === 'OBSERVADA') {
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Observada</span>`;
+  } else if (app.statusKey === 'EN_CURSO') {
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 text-[#003876] border border-blue-200"><span class="w-1.5 h-1.5 rounded-full bg-[#003876]"></span>En Curso (${app.horasRealizadas}h)</span>`;
+  } else if (app.statusKey === 'CONCLUIDA') {
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>Informe Final</span>`;
+  } else if (app.statusKey === 'ACREDITADA') {
+    return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Acreditada (${app.notaFinal}/100)</span>`;
+  }
+  return '';
 }
 
 function openExpedienteModal(studentId) {
@@ -760,7 +828,7 @@ function renderSeguimiento() {
     const pct = Math.round((app.horasRealizadas / app.horas) * 100);
 
     return `
-      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition">
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <div class="min-w-0">
@@ -797,7 +865,7 @@ function renderSeguimiento() {
               <span class="text-[10px] uppercase font-bold text-slate-400 block">Horario</span>
               <span class="font-semibold text-slate-800 truncate block">${app.horario}</span>
             </div>
-            <div class="col-span-2 pt-1 border-t border-slate-200/60 flex items-center justify-between">
+            <div class="col-span-1 sm:col-span-2 pt-1 border-t border-slate-200/60 flex items-center justify-between">
               <div>
                 <span class="text-[10px] uppercase font-bold text-slate-400 block">Docente Tutor UPDS</span>
                 <span class="font-bold text-[#003876] text-xs">${app.tutorDocente || 'Asignado en Aprobación'}</span>
@@ -811,11 +879,11 @@ function renderSeguimiento() {
 
         <!-- Botones de Acción (Conexión al siguiente paso del flujo) -->
         <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-          <button onclick="openAvanceModal('${app.id}')" class="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition inline-flex items-center justify-center gap-1.5">
+          <button onclick="openAvanceModal('${app.id}')" class="flex-1 py-2 px-2.5 sm:px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition inline-flex items-center justify-center gap-1.5">
             <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-[#003876]"></i>
             <span>Reportar Horas</span>
           </button>
-          <button onclick="finalizarPractica('${app.id}')" class="flex-1 py-2 px-3 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl transition inline-flex items-center justify-center gap-1.5 shadow-xs">
+          <button onclick="finalizarPractica('${app.id}')" class="flex-1 py-2 px-2.5 sm:px-3 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl transition inline-flex items-center justify-center gap-1.5 shadow-xs">
             <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
             <span>Concluir (360h)</span>
           </button>
@@ -920,10 +988,11 @@ function finalizarPractica(studentId) {
 
 /* =================================================================
    TAB 3: ACREDITACIÓN FINAL & NOTAS (PASO 3 DEL FLUJO)
+   (Renderiza tanto la tabla Desktop como las tarjetas Mobile)
    ================================================================= */
 function renderAcreditaciones() {
   const tbody = document.getElementById('table-acreditaciones-body');
-  if (!tbody) return;
+  const mobileContainer = document.getElementById('container-acreditaciones-mobile');
 
   const searchInput = document.getElementById('input-search-acreditaciones');
   const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
@@ -936,67 +1005,121 @@ function renderAcreditaciones() {
     app.institution.toLowerCase().includes(searchTerm)
   );
 
-  if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-xs text-slate-400">No hay estudiantes en etapa final de informe o acreditación.</td></tr>`;
-    return;
+  // 1. Render para Desktop (Tabla Tradicional)
+  if (tbody) {
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-xs text-slate-400">No hay estudiantes en etapa final de informe o acreditación.</td></tr>`;
+    } else {
+      tbody.innerHTML = filtered.map(app => {
+        const isAcreditado = app.statusKey === 'ACREDITADA';
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition text-xs border-b border-slate-100">
+            <td class="py-3.5 px-4">
+              <div class="font-bold text-slate-900">${app.studentName}</div>
+              <div class="text-[11px] text-slate-400">RU: <strong>${app.ru}</strong> • ${app.career}</div>
+            </td>
+            <td class="py-3.5 px-4">
+              <div class="font-semibold text-slate-800 truncate max-w-[200px]">${app.institution}</div>
+              <div class="text-[11px] text-[#003876]">Tutor: ${app.tutorDocente || 'Dirección de Carrera'}</div>
+            </td>
+            <td class="py-3.5 px-4">
+              <span class="inline-flex items-center gap-1 font-mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <i class="bi bi-file-earmark-check"></i> ${app.informeFinalDoc || 'Informe_360h.pdf'}
+              </span>
+            </td>
+            <td class="py-3.5 px-4">
+              ${app.notaFinal ? `
+                <div class="flex items-center gap-1.5">
+                  <span class="font-black text-slate-900 text-sm">${app.notaFinal}</span>
+                  <span class="text-[11px] text-slate-400">/ 100</span>
+                  <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">Aprobado</span>
+                </div>
+              ` : `
+                <span class="text-[11px] text-amber-600 font-semibold italic flex items-center gap-1">
+                  <i class="bi bi-clock"></i> Pendiente de Calificar
+                </span>
+              `}
+            </td>
+            <td class="py-3.5 px-4">
+              ${app.actaNro ? `
+                <span class="font-mono text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 block truncate max-w-[140px]">
+                  ${app.actaNro}
+                </span>
+              ` : `
+                <span class="text-slate-400 text-[11px] italic">Sin Acta</span>
+              `}
+            </td>
+            <td class="py-3.5 px-4 text-right space-x-1.5">
+              ${!isAcreditado ? `
+                <button onclick="openCalificacionModal('${app.id}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg transition inline-flex items-center gap-1.5 shadow-xs">
+                  <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                  <span>Calificar y Acreditar</span>
+                </button>
+              ` : `
+                <button onclick="verActaOficial('${app.id}')" class="px-3.5 py-1.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-[11px] rounded-lg transition inline-flex items-center gap-1 shadow-xs">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                  <span>Ver Acta Oficial</span>
+                </button>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
   }
 
-  tbody.innerHTML = filtered.map(app => {
-    const isAcreditado = app.statusKey === 'ACREDITADA';
+  // 2. Render para Mobile (Tarjetas Adaptativas)
+  if (mobileContainer) {
+    if (filtered.length === 0) {
+      mobileContainer.innerHTML = `<div class="text-center py-8 text-xs text-slate-400">No hay estudiantes en etapa final.</div>`;
+    } else {
+      mobileContainer.innerHTML = filtered.map(app => {
+        const isAcreditado = app.statusKey === 'ACREDITADA';
 
-    return `
-      <tr class="hover:bg-slate-50/80 transition text-xs border-b border-slate-100">
-        <td class="py-3.5 px-4">
-          <div class="font-bold text-slate-900">${app.studentName}</div>
-          <div class="text-[11px] text-slate-400">RU: <strong>${app.ru}</strong> • ${app.career}</div>
-        </td>
-        <td class="py-3.5 px-4">
-          <div class="font-semibold text-slate-800 truncate max-w-[200px]">${app.institution}</div>
-          <div class="text-[11px] text-[#003876]">Tutor: ${app.tutorDocente || 'Dirección de Carrera'}</div>
-        </td>
-        <td class="py-3.5 px-4">
-          <span class="inline-flex items-center gap-1 font-mono text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-            <i class="bi bi-file-earmark-check"></i> ${app.informeFinalDoc || 'Informe_360h.pdf'}
-          </span>
-        </td>
-        <td class="py-3.5 px-4">
-          ${app.notaFinal ? `
-            <div class="flex items-center gap-1.5">
-              <span class="font-black text-slate-900 text-sm">${app.notaFinal}</span>
-              <span class="text-[11px] text-slate-400">/ 100</span>
-              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">Aprobado</span>
+        return `
+          <div class="p-3.5 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-2.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <h5 class="font-bold text-slate-900 text-sm truncate">${app.studentName}</h5>
+                <p class="text-[11px] text-slate-400">RU: <strong>${app.ru}</strong> • ${app.career}</p>
+              </div>
+              <div class="shrink-0">
+                ${app.notaFinal ? `
+                  <span class="font-black text-slate-900 text-xs sm:text-sm bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200 text-emerald-800">${app.notaFinal}/100</span>
+                ` : `
+                  <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">Pendiente</span>
+                `}
+              </div>
             </div>
-          ` : `
-            <span class="text-[11px] text-amber-600 font-semibold italic flex items-center gap-1">
-              <i class="bi bi-clock"></i> Pendiente de Calificar
-            </span>
-          `}
-        </td>
-        <td class="py-3.5 px-4">
-          ${app.actaNro ? `
-            <span class="font-mono text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 block truncate max-w-[140px]">
-              ${app.actaNro}
-            </span>
-          ` : `
-            <span class="text-slate-400 text-[11px] italic">Sin Acta</span>
-          `}
-        </td>
-        <td class="py-3.5 px-4 text-right space-x-1.5">
-          ${!isAcreditado ? `
-            <button onclick="openCalificacionModal('${app.id}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg transition inline-flex items-center gap-1.5 shadow-xs">
-              <i data-lucide="award" class="w-3.5 h-3.5"></i>
-              <span>Calificar y Acreditar</span>
-            </button>
-          ` : `
-            <button onclick="verActaOficial('${app.id}')" class="px-3.5 py-1.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-[11px] rounded-lg transition inline-flex items-center gap-1 shadow-xs">
-              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-              <span>Ver Acta Oficial</span>
-            </button>
-          `}
-        </td>
-      </tr>
-    `;
-  }).join('');
+
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200/60 text-xs space-y-1">
+              <div class="font-semibold text-slate-800 truncate">${app.institution}</div>
+              <div class="text-[11px] text-[#003876]">Tutor: ${app.tutorDocente || 'Dirección de Carrera'}</div>
+              ${app.actaNro ? `<div class="text-[10px] font-mono font-bold text-indigo-700 truncate">Acta: ${app.actaNro}</div>` : ''}
+            </div>
+
+            <div class="pt-1 flex items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1 font-mono text-[10px] text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-200 truncate flex-1">
+                <i class="bi bi-file-earmark-check shrink-0"></i> <span class="truncate">${app.informeFinalDoc || 'Informe_360h.pdf'}</span>
+              </span>
+              ${!isAcreditado ? `
+                <button onclick="openCalificacionModal('${app.id}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition inline-flex items-center gap-1 shadow-xs shrink-0">
+                  <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                  <span>Calificar</span>
+                </button>
+              ` : `
+                <button onclick="verActaOficial('${app.id}')" class="px-3.5 py-1.5 bg-[#003876] hover:bg-[#002855] text-white font-bold text-xs rounded-xl transition inline-flex items-center gap-1 shadow-xs shrink-0">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                  <span>Ver Acta</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
 
   lucide.createIcons();
 }
@@ -1111,7 +1234,7 @@ function renderConvocatorias() {
     const pctOcupacion = Math.round((c.plazasOcupadas / c.plazasTotales) * 100);
 
     return `
-      <div class="p-5 border border-slate-200 rounded-2xl bg-white shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition">
+      <div class="p-4 sm:p-5 border border-slate-200 rounded-2xl bg-white shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition">
         <div>
           <div class="flex items-center justify-between text-xs mb-1">
             <span class="font-bold uppercase text-[10px] text-slate-400">${c.rubro}</span>
@@ -1119,7 +1242,7 @@ function renderConvocatorias() {
               ${c.plazasOcupadas} de ${c.plazasTotales} Plazas (${libres} Libres)
             </span>
           </div>
-          <h4 class="text-base font-bold text-slate-900">${c.institucion}</h4>
+          <h4 class="text-sm sm:text-base font-bold text-slate-900">${c.institucion}</h4>
           <p class="text-xs text-slate-500 font-medium">${c.division}</p>
           <p class="text-xs text-slate-600 mt-2 leading-relaxed">${c.descripcion}</p>
 
@@ -1136,7 +1259,7 @@ function renderConvocatorias() {
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-          <span class="text-slate-500 font-medium">Convenio Vigente: <strong>${c.vigencia}</strong></span>
+          <span class="text-slate-500 font-medium text-[11px] sm:text-xs">Convenio: <strong>${c.vigencia}</strong></span>
           <button onclick="openEditarPlazasModal('${c.id}')" class="px-3 py-1 bg-slate-100 hover:bg-[#003876] hover:text-white text-slate-700 font-bold rounded-lg transition text-xs">
             Editar Plazas
           </button>
